@@ -1,0 +1,23 @@
+# Core dependencies
+cryptography>=41.0.0  # Encryption (AES-256-GCM, PBKDF2)
+pyyaml>=6.0           # YAML parsing for config.yaml
+click>=8.0            # CLI framework
+
+# Build & formatting
+markdown2>=2.4.0      # Markdown to HTML conversion
+pyepub>=0.5           # EPUB generation
+
+# Quality & testing (optional, for development)
+pytest>=7.0           # Test framework
+pytest-cov>=4.0       # Coverage reporting
+black>=23.0           # Code formatting
+isort>=5.0            # Import sorting
+flake8>=6.0           # Linting
+
+# Server (optional, for HTTP API)
+fastapi>=0.100.0      # Web framework
+uvicorn>=0.23.0       # ASGI server
+
+# AI/ML integration (optional, for AI features)
+openai>=1.0.0         # OpenAI API
+anthropic>=0.7.0      # Anthropic Claude API
