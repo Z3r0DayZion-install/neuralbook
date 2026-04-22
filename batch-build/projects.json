@@ -1,0 +1,238 @@
+{
+  "users": [
+    {
+      "id": "u_local",
+      "email": "local@mindunset",
+      "display_name": "Local User"
+    }
+  ],
+  "projects": [
+    {
+      "id": "p_bfc3b0333310",
+      "owner_user_id": "u_local",
+      "slug": "python-best-practices",
+      "title": "Python Best Practices",
+      "theme": "cyberpunk",
+      "status": "draft",
+      "content": {
+        "metadata": {
+          "title": "Python Best Practices",
+          "version": "1.0.0",
+          "format": "MU-FMT-1.0"
+        },
+        "chapters": [],
+        "case_studies": [],
+        "testimonials": []
+      },
+      "pricing": {
+        "currency": "USD",
+        "tiers": [
+          {
+            "id": 1,
+            "name": "Free",
+            "price": 0
+          },
+          {
+            "id": 2,
+            "name": "Basic",
+            "price": 9
+          },
+          {
+            "id": 3,
+            "name": "Pro",
+            "price": 29
+          },
+          {
+            "id": 4,
+            "name": "Elite",
+            "price": 99
+          }
+        ]
+      },
+      "created_at": "2026-04-20T18:17:09.680549+00:00",
+      "updated_at": "2026-04-20T18:17:09.680585+00:00"
+    },
+    {
+      "id": "p_fd040dbb4b87",
+      "owner_user_id": "u_local",
+      "slug": "web-security-handbook",
+      "title": "Web Security Handbook",
+      "theme": "minimal",
+      "status": "draft",
+      "content": {
+        "metadata": {
+          "title": "Web Security Handbook",
+          "version": "1.0.0",
+          "format": "MU-FMT-1.0"
+        },
+        "chapters": [],
+        "case_studies": [],
+        "testimonials": []
+      },
+      "pricing": {
+        "currency": "USD",
+        "tiers": [
+          {
+            "id": 1,
+            "name": "Free",
+            "price": 0
+          },
+          {
+            "id": 2,
+            "name": "Basic",
+            "price": 9
+          },
+          {
+            "id": 3,
+            "name": "Pro",
+            "price": 29
+          },
+          {
+            "id": 4,
+            "name": "Elite",
+            "price": 99
+          }
+        ]
+      },
+      "created_at": "2026-04-20T18:17:09.681114+00:00",
+      "updated_at": "2026-04-20T18:17:09.681120+00:00"
+    },
+    {
+      "id": "p_95ef1826f065",
+      "owner_user_id": "u_local",
+      "slug": "team-playbook",
+      "title": "Team Playbook",
+      "theme": "classic",
+      "status": "draft",
+      "content": {
+        "metadata": {
+          "title": "Team Playbook",
+          "version": "1.0.0",
+          "format": "MU-FMT-1.0"
+        },
+        "chapters": [],
+        "case_studies": [],
+        "testimonials": []
+      },
+      "pricing": {
+        "currency": "USD",
+        "tiers": [
+          {
+            "id": 1,
+            "name": "Free",
+            "price": 0
+          },
+          {
+            "id": 2,
+            "name": "Basic",
+            "price": 9
+          },
+          {
+            "id": 3,
+            "name": "Pro",
+            "price": 29
+          },
+          {
+            "id": 4,
+            "name": "Elite",
+            "price": 99
+          }
+        ]
+      },
+      "created_at": "2026-04-20T18:17:09.681636+00:00",
+      "updated_at": "2026-04-20T18:17:09.681641+00:00"
+    },
+    {
+      "id": "p_ca4609b230c9",
+      "owner_user_id": "u_local",
+      "slug": "product-roadmap-2026",
+      "title": "Product Roadmap 2026",
+      "theme": "cyberpunk",
+      "status": "draft",
+      "content": {
+        "metadata": {
+          "title": "Product Roadmap 2026",
+          "version": "1.0.0",
+          "format": "MU-FMT-1.0"
+        },
+        "chapters": [],
+        "case_studies": [],
+        "testimonials": []
+      },
+      "pricing": {
+        "currency": "USD",
+        "tiers": [
+          {
+            "id": 1,
+            "name": "Free",
+            "price": 0
+          },
+          {
+            "id": 2,
+            "name": "Basic",
+            "price": 9
+          },
+          {
+            "id": 3,
+            "name": "Pro",
+            "price": 29
+          },
+          {
+            "id": 4,
+            "name": "Elite",
+            "price": 99
+          }
+        ]
+      },
+      "created_at": "2026-04-20T18:17:09.682071+00:00",
+      "updated_at": "2026-04-20T18:17:09.682077+00:00"
+    }
+  ],
+  "builds": [
+    {
+      "id": "b_4f39934de576",
+      "project_id": "p_bfc3b0333310",
+      "status": "queued",
+      "trigger_source": "batch-example",
+      "started_at": "",
+      "finished_at": "",
+      "error_message": "",
+      "created_at": "2026-04-20T18:17:09.682567+00:00",
+      "updated_at": "2026-04-20T18:17:09.682571+00:00"
+    },
+    {
+      "id": "b_85822f86945b",
+      "project_id": "p_fd040dbb4b87",
+      "status": "queued",
+      "trigger_source": "batch-example",
+      "started_at": "",
+      "finished_at": "",
+      "error_message": "",
+      "created_at": "2026-04-20T18:17:09.683017+00:00",
+      "updated_at": "2026-04-20T18:17:09.683022+00:00"
+    },
+    {
+      "id": "b_a6bfc304f2cc",
+      "project_id": "p_95ef1826f065",
+      "status": "queued",
+      "trigger_source": "batch-example",
+      "started_at": "",
+      "finished_at": "",
+      "error_message": "",
+      "created_at": "2026-04-20T18:17:09.683480+00:00",
+      "updated_at": "2026-04-20T18:17:09.683484+00:00"
+    },
+    {
+      "id": "b_e6a34d14c134",
+      "project_id": "p_ca4609b230c9",
+      "status": "queued",
+      "trigger_source": "batch-example",
+      "started_at": "",
+      "finished_at": "",
+      "error_message": "",
+      "created_at": "2026-04-20T18:17:09.683948+00:00",
+      "updated_at": "2026-04-20T18:17:09.683953+00:00"
+    }
+  ],
+  "artifacts": []
+}

@@ -1,0 +1,86 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.2, pluggy-1.6.0 -- C:\Python313\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\KickA\neuralbook-public
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.10.0, cov-4.1.0, xonsh-0.22.7
+collecting ... collected 60 items
+
+tests/test_api_router.py::TestHealthCheck::test_health_endpoint PASSED   [  1%]
+tests/test_api_router.py::TestHealthCheck::test_healthz_endpoint PASSED  [  3%]
+tests/test_api_router.py::TestRootEndpoint::test_root_get PASSED         [  5%]
+tests/test_api_router.py::TestProjectsCollection::test_list_projects_empty PASSED [  6%]
+tests/test_api_router.py::TestProjectsCollection::test_create_project_success PASSED [  8%]
+tests/test_api_router.py::TestProjectsCollection::test_create_project_with_theme PASSED [ 10%]
+tests/test_api_router.py::TestProjectsCollection::test_create_project_missing_title PASSED [ 11%]
+tests/test_api_router.py::TestProjectsCollection::test_create_project_missing_slug PASSED [ 13%]
+tests/test_api_router.py::TestProjectsCollection::test_create_project_empty_title PASSED [ 15%]
+tests/test_api_router.py::TestProjectsCollection::test_create_project_duplicate_slug PASSED [ 16%]
+tests/test_api_router.py::TestProjectsCollection::test_list_projects_after_create PASSED [ 18%]
+tests/test_api_router.py::TestProjectsCollection::test_projects_invalid_method PASSED [ 20%]
+tests/test_api_router.py::TestProjectsResource::test_get_project_success PASSED [ 21%]
+tests/test_api_router.py::TestProjectsResource::test_get_project_not_found PASSED [ 23%]
+tests/test_api_router.py::TestProjectsResource::test_update_project_success PASSED [ 25%]
+tests/test_api_router.py::TestProjectsResource::test_update_project_status PASSED [ 26%]
+tests/test_api_router.py::TestProjectsResource::test_update_nonexistent_project PASSED [ 28%]
+tests/test_api_router.py::TestProjectsResource::test_project_invalid_method PASSED [ 30%]
+tests/test_api_router.py::TestBuilds::test_create_build_success PASSED   [ 31%]
+tests/test_api_router.py::TestBuilds::test_create_build_nonexistent_project PASSED [ 33%]
+tests/test_api_router.py::TestBuilds::test_create_build_default_trigger_source PASSED [ 35%]
+tests/test_api_router.py::TestInvalidRoutes::test_nonexistent_route PASSED [ 36%]
+tests/test_api_router.py::TestInvalidRoutes::test_malformed_path PASSED  [ 38%]
+tests/test_api_router.py::TestEmailCapture::test_capture_email_success SKIPPED [ 40%]
+tests/test_api_router.py::TestEmailCapture::test_capture_email_invalid PASSED [ 41%]
+tests/test_api_router.py::TestEmailCapture::test_capture_email_missing PASSED [ 43%]
+tests/test_api_router.py::TestEmailCapture::test_email_invalid_method PASSED [ 45%]
+tests/test_api_router.py::TestQueryStringHandling::test_ignore_query_string_on_get PASSED [ 46%]
+tests/test_api_router.py::TestQueryStringHandling::test_ignore_query_string_on_list PASSED [ 48%]
+tests/test_api_router.py::TestMalformedJSON::test_malformed_json_treated_as_empty PASSED [ 50%]
+tests/test_core.py::TestStore::test_store_initialization PASSED          [ 51%]
+tests/test_core.py::TestStore::test_store_persistence PASSED             [ 53%]
+tests/test_core.py::TestCreateProject::test_create_project_basic PASSED  [ 55%]
+tests/test_core.py::TestCreateProject::test_create_project_with_theme PASSED [ 56%]
+tests/test_core.py::TestCreateProject::test_create_project_default_theme PASSED [ 58%]
+tests/test_core.py::TestCreateProject::test_create_project_duplicate_slug_raises PASSED [ 60%]
+tests/test_core.py::TestCreateProject::test_create_project_has_metadata PASSED [ 61%]
+tests/test_core.py::TestCreateProject::test_create_project_has_pricing PASSED [ 63%]
+tests/test_core.py::TestGetProject::test_get_project_success PASSED      [ 65%]
+tests/test_core.py::TestGetProject::test_get_project_not_found PASSED    [ 66%]
+tests/test_core.py::TestListProjects::test_list_projects_empty PASSED    [ 68%]
+tests/test_core.py::TestListProjects::test_list_projects_multiple PASSED [ 70%]
+tests/test_core.py::TestUpdateProject::test_update_project_title PASSED  [ 71%]
+tests/test_core.py::TestUpdateProject::test_update_project_status PASSED [ 73%]
+tests/test_core.py::TestUpdateProject::test_update_project_theme PASSED  [ 75%]
+tests/test_core.py::TestUpdateProject::test_update_project_multiple_fields PASSED [ 76%]
+tests/test_core.py::TestUpdateProject::test_update_project_preserves_unchanged_fields PASSED [ 78%]
+tests/test_core.py::TestCreateBuild::test_create_build_success PASSED    [ 80%]
+tests/test_core.py::TestCreateBuild::test_create_build_nonexistent_project PASSED [ 81%]
+tests/test_core.py::TestCreateBuild::test_create_build_default_trigger PASSED [ 83%]
+tests/test_core.py::TestGetBuild::test_get_build_success PASSED          [ 85%]
+tests/test_core.py::TestGetBuild::test_get_build_not_found PASSED        [ 86%]
+tests/test_core.py::TestProjectIdGeneration::test_project_ids_are_unique PASSED [ 88%]
+tests/test_core.py::TestProjectIdGeneration::test_project_ids_start_with_p_prefix PASSED [ 90%]
+tests/test_core.py::TestTimestamps::test_created_at_exists PASSED        [ 91%]
+tests/test_core.py::TestTimestamps::test_updated_at_exists PASSED        [ 93%]
+tests/test_core.py::TestTimestamps::test_updated_at_changes_on_update PASSED [ 95%]
+tests/test_encryption.py::test_derive_key PASSED                         [ 96%]
+tests/test_encryption.py::test_encrypt_decrypt_roundtrip PASSED          [ 98%]
+tests/test_encryption.py::test_unique_ivs PASSED                         [100%]
+
+---------- coverage: platform win32, python 3.13.2-final-0 -----------
+Name                           Stmts   Miss  Cover   Missing
+------------------------------------------------------------
+src\neuralbook\__init__.py         9      0   100%
+src\neuralbook\api.py            123     88    28%   26, 31, 45-48, 60-61, 68, 72-77, 81-82, 87-92, 113-226
+src\neuralbook\api_router.py      86     13    85%   27, 112-119, 132-135
+src\neuralbook\build.py           10      6    40%   28-48
+src\neuralbook\core.py           107     35    67%   107, 139-148, 154-166, 170-171, 179-184, 187-188, 193-206
+src\neuralbook\encryption.py      17      0   100%
+src\neuralbook\manifest.py        32     24    25%   22-37, 51-55, 69-80, 93-94
+------------------------------------------------------------
+TOTAL                            384    166    57%
+Coverage HTML written to dir htmlcov
+
+
+======================== 59 passed, 1 skipped in 0.47s ========================

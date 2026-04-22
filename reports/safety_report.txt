@@ -1,0 +1,134 @@
+
+
+[33m[1m+===========================================================================================================================================================================================+[0m
+
+
+[31m[1mDEPRECATED: [0m[33m[1mthis command (`check`) has been DEPRECATED, and will be unsupported beyond 01 June 2024.[0m
+
+
+[32mWe highly encourage switching to the new [0m[32m[1m`scan`[0m[32m command which is easier to use, more powerful, and can be set up to mimic the deprecated command if required.[0m
+
+
+[33m[1m+===========================================================================================================================================================================================+[0m
+
+
++==============================================================================+
+
+                               /$$$$$$            /$$
+                              /$$__  $$          | $$
+           /$$$$$$$  /$$$$$$ | $$  \__//$$$$$$  /$$$$$$   /$$   /$$
+          /$$_____/ |____  $$| $$$$   /$$__  $$|_  $$_/  | $$  | $$
+         |  $$$$$$   /$$$$$$$| $$_/  | $$$$$$$$  | $$    | $$  | $$
+          \____  $$ /$$__  $$| $$    | $$_____/  | $$ /$$| $$  | $$
+          /$$$$$$$/|  $$$$$$$| $$    |  $$$$$$$  |  $$$$/|  $$$$$$$
+         |_______/  \_______/|__/     \_______/   \___/   \____  $$
+                                                          /$$  | $$
+                                                         |  $$$$$$/
+  by safetycli.com                                        \______/
+
++==============================================================================+
+
+ [1mANNOUNCEMENTS[0m 
+
+[33m  * Warning: cryptography, pyyaml, click, markdown2, pyepub, pytest, pytest-[0m 
+[33m    cov, black, isort, flake8, fastapi, uvicorn, openai and anthropic are[0m 
+[33m    unpinned. Safety by default does not report on potential vulnerabilities in[0m 
+[33m    unpinned packages. It is recommended to pin your dependencies unless this[0m 
+[33m    is a library meant for distribution. To learn more about reporting these,[0m 
+[33m    specifier range handling, and options for scanning unpinned packages visit[0m 
+[33m    https://docs.pyup.io/docs/safety-range-specs[0m 
+
++==============================================================================+
+
+ [1mREPORT[0m 
+
+  Safety [1mv3.7.0[0m is scanning for [1mVulnerabilities[0m[1m...[0m
+[1m  Scanning dependencies[0m in your [1mfiles:[0m
+
+  -> requirements.txt
+
+  Using [1mopen-source vulnerability database[0m
+[1m  Found and scanned 14 packages[0m
+  Timestamp [1m2026-04-20 14:14:03[0m
+[1m  0[0m[1m vulnerabilities reported[0m
+[1m  37[0m[1m vulnerabilities ignored[0m
+
++==============================================================================+
+ [1mVULNERABILITIES REPORTED[0m 
++==============================================================================+
+
+[33m-> Warning: 2 known vulnerabilities match the fastapi versions that could be[0m 
+[33m   installed from your specifier: fastapi>=0.100.0 (unpinned). These[0m 
+[33m   vulnerabilities are not reported by default. To report these vulnerabilities[0m 
+[33m   set 'ignore-unpinned-requirements' to False under 'security' in your policy[0m 
+[33m   file. See https://docs.pyup.io/docs/safety-20-policy-file for more[0m 
+[33m   information.[0m 
+[33m   It is recommended to pin your dependencies unless this is a library meant[0m 
+[33m   for distribution. To learn more about reporting these, specifier range[0m 
+[33m   handling, and options for scanning unpinned packages visit[0m 
+[33m   https://docs.pyup.io/docs/safety-range-specs[0m 
+
+[33m-> Warning: 2 known vulnerabilities match the black versions that could be[0m 
+[33m   installed from your specifier: black>=23.0 (unpinned). These vulnerabilities[0m 
+[33m   are not reported by default. To report these vulnerabilities set 'ignore-[0m 
+[33m   unpinned-requirements' to False under 'security' in your policy file. See[0m 
+[33m   https://docs.pyup.io/docs/safety-20-policy-file for more information.[0m 
+[33m   It is recommended to pin your dependencies unless this is a library meant[0m 
+[33m   for distribution. To learn more about reporting these, specifier range[0m 
+[33m   handling, and options for scanning unpinned packages visit[0m 
+[33m   https://docs.pyup.io/docs/safety-range-specs[0m 
+
+[33m-> Warning: 1 known vulnerability matches the pytest versions that could be[0m 
+[33m   installed from your specifier: pytest>=7.0 (unpinned). These vulnerabilities[0m 
+[33m   are not reported by default. To report these vulnerabilities set 'ignore-[0m 
+[33m   unpinned-requirements' to False under 'security' in your policy file. See[0m 
+[33m   https://docs.pyup.io/docs/safety-20-policy-file for more information.[0m 
+[33m   It is recommended to pin your dependencies unless this is a library meant[0m 
+[33m   for distribution. To learn more about reporting these, specifier range[0m 
+[33m   handling, and options for scanning unpinned packages visit[0m 
+[33m   https://docs.pyup.io/docs/safety-range-specs[0m 
+
+[33m-> Warning: 11 known vulnerabilities match the markdown2 versions that could be[0m 
+[33m   installed from your specifier: markdown2>=2.4.0 (unpinned). These[0m 
+[33m   vulnerabilities are not reported by default. To report these vulnerabilities[0m 
+[33m   set 'ignore-unpinned-requirements' to False under 'security' in your policy[0m 
+[33m   file. See https://docs.pyup.io/docs/safety-20-policy-file for more[0m 
+[33m   information.[0m 
+[33m   It is recommended to pin your dependencies unless this is a library meant[0m 
+[33m   for distribution. To learn more about reporting these, specifier range[0m 
+[33m   handling, and options for scanning unpinned packages visit[0m 
+[33m   https://docs.pyup.io/docs/safety-range-specs[0m 
+
+[33m-> Warning: 21 known vulnerabilities match the cryptography versions that could[0m 
+[33m   be installed from your specifier: cryptography>=41.0.0 (unpinned). These[0m 
+[33m   vulnerabilities are not reported by default. To report these vulnerabilities[0m 
+[33m   set 'ignore-unpinned-requirements' to False under 'security' in your policy[0m 
+[33m   file. See https://docs.pyup.io/docs/safety-20-policy-file for more[0m 
+[33m   information.[0m 
+[33m   It is recommended to pin your dependencies unless this is a library meant[0m 
+[33m   for distribution. To learn more about reporting these, specifier range[0m 
+[33m   handling, and options for scanning unpinned packages visit[0m 
+[33m   https://docs.pyup.io/docs/safety-range-specs[0m 
+
+
+
++==============================================================================+
+
+ Scan was completed. 0 vulnerabilities were reported. 37 vulnerabilities from 5 
+ packages were ignored. 
+
++==============================================================================+[0m
+
+
+[33m[1m+===========================================================================================================================================================================================+[0m
+
+
+[31m[1mDEPRECATED: [0m[33m[1mthis command (`check`) has been DEPRECATED, and will be unsupported beyond 01 June 2024.[0m
+
+
+[32mWe highly encourage switching to the new [0m[32m[1m`scan`[0m[32m command which is easier to use, more powerful, and can be set up to mimic the deprecated command if required.[0m
+
+
+[33m[1m+===========================================================================================================================================================================================+[0m
+
+

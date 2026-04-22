@@ -1,0 +1,107 @@
+.\examples\01_hello_world.py:24:1: F401 'neuralbook.encrypt_content' imported but unused
+.\examples\01_hello_world.py:60:5: F841 local variable 'chapter1' is assigned to but never used
+.\examples\01_hello_world.py:70:5: F841 local variable 'chapter2' is assigned to but never used
+.\examples\01_hello_world.py:87:80: E501 line too long (83 > 79 characters)
+.\examples\01_hello_world.py:102:80: E501 line too long (129 > 79 characters)
+.\examples\02_api_server.py:85:80: E501 line too long (83 > 79 characters)
+.\examples\03_batch_build.py:87:80: E501 line too long (93 > 79 characters)
+.\examples\03_batch_build.py:89:80: E501 line too long (87 > 79 characters)
+.\examples\03_batch_build.py:94:11: F541 f-string is missing placeholders
+.\examples\03_batch_build.py:120:11: F541 f-string is missing placeholders
+.\examples\03_batch_build.py:124:11: F541 f-string is missing placeholders
+.\examples\03_batch_build.py:128:11: F541 f-string is missing placeholders
+.\examples\03_batch_build.py:130:11: F541 f-string is missing placeholders
+.\examples\03_batch_build.py:131:11: F541 f-string is missing placeholders
+.\examples\04_encryption.py:42:11: F541 f-string is missing placeholders
+.\examples\04_encryption.py:43:11: F541 f-string is missing placeholders
+.\examples\04_encryption.py:63:11: F541 f-string is missing placeholders
+.\examples\04_encryption.py:65:80: E501 line too long (82 > 79 characters)
+.\examples\04_encryption.py:66:11: F541 f-string is missing placeholders
+.\examples\04_encryption.py:74:15: F541 f-string is missing placeholders
+.\examples\04_encryption.py:82:11: F541 f-string is missing placeholders
+.\examples\04_encryption.py:92:15: F541 f-string is missing placeholders
+.\examples\04_encryption.py:96:15: F541 f-string is missing placeholders
+.\examples\04_encryption.py:111:80: E501 line too long (82 > 79 characters)
+.\examples\04_encryption.py:113:11: F541 f-string is missing placeholders
+.\examples\04_encryption.py:114:11: F541 f-string is missing placeholders
+.\scripts\neuralbook_build.py:13:80: E501 line too long (96 > 79 characters)
+.\scripts\neuralbook_build.py:23:80: E501 line too long (85 > 79 characters)
+.\scripts\neuralbook_build.py:32:11: F541 f-string is missing placeholders
+.\scripts\neuralbook_build.py:37:80: E501 line too long (88 > 79 characters)
+.\scripts\neuralbook_build.py:39:80: E501 line too long (90 > 79 characters)
+.\scripts\neuralbook_build.py:41:80: E501 line too long (83 > 79 characters)
+.\scripts\neuralbook_build.py:44:80: E501 line too long (82 > 79 characters)
+.\scripts\neuralbook_init.py:6:80: E501 line too long (84 > 79 characters)
+.\scripts\neuralbook_init.py:16:80: E501 line too long (86 > 79 characters)
+.\scripts\neuralbook_init.py:93:80: E501 line too long (83 > 79 characters)
+.\scripts\neuralbook_init.py:97:80: E501 line too long (87 > 79 characters)
+.\scripts\neuralbook_init.py:105:80: E501 line too long (83 > 79 characters)
+.\scripts\release_to_pypi.py:42:80: E501 line too long (90 > 79 characters)
+.\scripts\release_to_pypi.py:43:80: E501 line too long (84 > 79 characters)
+.\scripts\release_to_pypi.py:44:80: E501 line too long (95 > 79 characters)
+.\scripts\release_to_pypi.py:73:80: E501 line too long (99 > 79 characters)
+.\scripts\release_to_pypi.py:82:80: E501 line too long (93 > 79 characters)
+.\scripts\release_to_pypi.py:99:80: E501 line too long (82 > 79 characters)
+.\scripts\release_to_pypi.py:116:80: E501 line too long (87 > 79 characters)
+.\scripts\release_to_pypi.py:123:80: E501 line too long (90 > 79 characters)
+.\scripts\release_to_pypi.py:147:80: E501 line too long (84 > 79 characters)
+.\src\neuralbook\api.py:14:1: F401 'dataclasses.asdict' imported but unused
+.\src\neuralbook\api.py:81:80: E501 line too long (81 > 79 characters)
+.\src\neuralbook\api.py:145:80: E501 line too long (82 > 79 characters)
+.\src\neuralbook\api.py:182:80: E501 line too long (84 > 79 characters)
+.\src\neuralbook\api_router.py:34:80: E501 line too long (93 > 79 characters)
+.\src\neuralbook\api_router.py:43:80: E501 line too long (95 > 79 characters)
+.\src\neuralbook\api_router.py:61:80: E501 line too long (84 > 79 characters)
+.\src\neuralbook\api_router.py:69:80: E501 line too long (85 > 79 characters)
+.\src\neuralbook\api_router.py:97:80: E501 line too long (84 > 79 characters)
+.\src\neuralbook\api_router.py:101:80: E501 line too long (97 > 79 characters)
+.\src\neuralbook\api_router.py:113:80: E501 line too long (81 > 79 characters)
+.\src\neuralbook\api_router.py:132:30: F821 undefined name 'capture_email'
+.\src\neuralbook\build.py:5:1: F401 'json' imported but unused
+.\src\neuralbook\core.py:42:80: E501 line too long (81 > 79 characters)
+.\src\neuralbook\core.py:51:80: E501 line too long (97 > 79 characters)
+.\src\neuralbook\core.py:64:80: E501 line too long (85 > 79 characters)
+.\src\neuralbook\core.py:109:80: E501 line too long (88 > 79 characters)
+.\src\neuralbook\core.py:151:80: E501 line too long (83 > 79 characters)
+.\src\neuralbook\core.py:187:80: E501 line too long (81 > 79 characters)
+.\src\neuralbook\core.py:190:80: E501 line too long (82 > 79 characters)
+.\src\neuralbook\encryption.py:33:80: E501 line too long (80 > 79 characters)
+.\src\neuralbook\manifest.py:8:1: F401 'typing.List' imported but unused
+.\tests\test_api_router.py:55:80: E501 line too long (80 > 79 characters)
+.\tests\test_api_router.py:61:80: E501 line too long (82 > 79 characters)
+.\tests\test_api_router.py:62:80: E501 line too long (85 > 79 characters)
+.\tests\test_api_router.py:75:80: E501 line too long (85 > 79 characters)
+.\tests\test_api_router.py:83:80: E501 line too long (85 > 79 characters)
+.\tests\test_api_router.py:91:80: E501 line too long (85 > 79 characters)
+.\tests\test_api_router.py:99:80: E501 line too long (85 > 79 characters)
+.\tests\test_api_router.py:106:80: E501 line too long (84 > 79 characters)
+.\tests\test_api_router.py:109:80: E501 line too long (85 > 79 characters)
+.\tests\test_api_router.py:110:80: E501 line too long (86 > 79 characters)
+.\tests\test_api_router.py:117:80: E501 line too long (82 > 79 characters)
+.\tests\test_api_router.py:120:80: E501 line too long (80 > 79 characters)
+.\tests\test_api_router.py:127:80: E501 line too long (83 > 79 characters)
+.\tests\test_api_router.py:138:80: E501 line too long (82 > 79 characters)
+.\tests\test_api_router.py:143:80: E501 line too long (94 > 79 characters)
+.\tests\test_api_router.py:150:80: E501 line too long (92 > 79 characters)
+.\tests\test_api_router.py:157:80: E501 line too long (80 > 79 characters)
+.\tests\test_api_router.py:197:80: E501 line too long (91 > 79 characters)
+.\tests\test_api_router.py:207:80: E501 line too long (82 > 79 characters)
+.\tests\test_api_router.py:214:80: E501 line too long (81 > 79 characters)
+.\tests\test_api_router.py:235:80: E501 line too long (82 > 79 characters)
+.\tests\test_api_router.py:242:80: E501 line too long (81 > 79 characters)
+.\tests\test_api_router.py:254:80: E501 line too long (83 > 79 characters)
+.\tests\test_api_router.py:260:80: E501 line too long (98 > 79 characters)
+.\tests\test_api_router.py:270:80: E501 line too long (94 > 79 characters)
+.\tests\test_api_router.py:271:80: E501 line too long (83 > 79 characters)
+.\tests\test_api_router.py:279:80: E501 line too long (90 > 79 characters)
+.\tests\test_api_router.py:280:80: E501 line too long (83 > 79 characters)
+.\tests\test_api_router.py:288:80: E501 line too long (83 > 79 characters)
+.\tests\test_api_router.py:304:80: E501 line too long (91 > 79 characters)
+.\tests\test_api_router.py:310:80: E501 line too long (90 > 79 characters)
+.\tests\test_api_router.py:321:80: E501 line too long (86 > 79 characters)
+.\tests\test_core.py:40:9: F841 local variable 'project1' is assigned to but never used
+.\tests\test_core.py:66:80: E501 line too long (83 > 79 characters)
+.\tests\test_core.py:167:80: E501 line too long (85 > 79 characters)
+.\tests\test_core.py:178:80: E501 line too long (88 > 79 characters)
+.\tests\test_core.py:187:80: E501 line too long (93 > 79 characters)
+.\tests\test_encryption.py:5:1: F401 'pytest' imported but unused

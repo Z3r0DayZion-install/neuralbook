@@ -1,0 +1,238 @@
+{
+  "users": [
+    {
+      "id": "u_local",
+      "email": "local@mindunset",
+      "display_name": "Local User"
+    }
+  ],
+  "projects": [
+    {
+      "id": "p_72d45828358a",
+      "owner_user_id": "u_local",
+      "slug": "hello-world",
+      "title": "Hello World",
+      "theme": "cyberpunk",
+      "status": "draft",
+      "content": {
+        "metadata": {
+          "title": "Hello World",
+          "version": "1.0.0",
+          "format": "MU-FMT-1.0"
+        },
+        "chapters": [],
+        "case_studies": [],
+        "testimonials": []
+      },
+      "pricing": {
+        "currency": "USD",
+        "tiers": [
+          {
+            "id": 1,
+            "name": "Free",
+            "price": 0
+          },
+          {
+            "id": 2,
+            "name": "Basic",
+            "price": 9
+          },
+          {
+            "id": 3,
+            "name": "Pro",
+            "price": 29
+          },
+          {
+            "id": 4,
+            "name": "Elite",
+            "price": 99
+          }
+        ]
+      },
+      "created_at": "2026-04-20T18:17:05.091992+00:00",
+      "updated_at": "2026-04-20T18:17:05.092006+00:00"
+    },
+    {
+      "id": "p_8dc616a35381",
+      "owner_user_id": "u_local",
+      "slug": "hello-world-20260420112948",
+      "title": "Hello World",
+      "theme": "cyberpunk",
+      "status": "draft",
+      "content": {
+        "metadata": {
+          "title": "Hello World",
+          "version": "1.0.0",
+          "format": "MU-FMT-1.0"
+        },
+        "chapters": [],
+        "case_studies": [],
+        "testimonials": []
+      },
+      "pricing": {
+        "currency": "USD",
+        "tiers": [
+          {
+            "id": 1,
+            "name": "Free",
+            "price": 0
+          },
+          {
+            "id": 2,
+            "name": "Basic",
+            "price": 9
+          },
+          {
+            "id": 3,
+            "name": "Pro",
+            "price": 29
+          },
+          {
+            "id": 4,
+            "name": "Elite",
+            "price": 99
+          }
+        ]
+      },
+      "created_at": "2026-04-20T18:29:48.650109+00:00",
+      "updated_at": "2026-04-20T18:29:48.650119+00:00"
+    },
+    {
+      "id": "p_15a8ee2c44c5",
+      "owner_user_id": "u_local",
+      "slug": "hello-world-20260421190234",
+      "title": "Hello World",
+      "theme": "cyberpunk",
+      "status": "draft",
+      "content": {
+        "metadata": {
+          "title": "Hello World",
+          "version": "1.0.0",
+          "format": "MU-FMT-1.0"
+        },
+        "chapters": [],
+        "case_studies": [],
+        "testimonials": []
+      },
+      "pricing": {
+        "currency": "USD",
+        "tiers": [
+          {
+            "id": 1,
+            "name": "Free",
+            "price": 0
+          },
+          {
+            "id": 2,
+            "name": "Basic",
+            "price": 9
+          },
+          {
+            "id": 3,
+            "name": "Pro",
+            "price": 29
+          },
+          {
+            "id": 4,
+            "name": "Elite",
+            "price": 99
+          }
+        ]
+      },
+      "created_at": "2026-04-21T19:02:34.746347+00:00",
+      "updated_at": "2026-04-21T19:02:34.746363+00:00"
+    },
+    {
+      "id": "p_0772b8ede1d0",
+      "owner_user_id": "u_local",
+      "slug": "hello-world-20260421190426",
+      "title": "Hello World",
+      "theme": "cyberpunk",
+      "status": "draft",
+      "content": {
+        "metadata": {
+          "title": "Hello World",
+          "version": "1.0.0",
+          "format": "MU-FMT-1.0"
+        },
+        "chapters": [],
+        "case_studies": [],
+        "testimonials": []
+      },
+      "pricing": {
+        "currency": "USD",
+        "tiers": [
+          {
+            "id": 1,
+            "name": "Free",
+            "price": 0
+          },
+          {
+            "id": 2,
+            "name": "Basic",
+            "price": 9
+          },
+          {
+            "id": 3,
+            "name": "Pro",
+            "price": 29
+          },
+          {
+            "id": 4,
+            "name": "Elite",
+            "price": 99
+          }
+        ]
+      },
+      "created_at": "2026-04-21T19:04:26.241365+00:00",
+      "updated_at": "2026-04-21T19:04:26.241386+00:00"
+    }
+  ],
+  "builds": [
+    {
+      "id": "b_7d765b409943",
+      "project_id": "p_72d45828358a",
+      "status": "queued",
+      "trigger_source": "example",
+      "started_at": "",
+      "finished_at": "",
+      "error_message": "",
+      "created_at": "2026-04-20T18:17:05.092640+00:00",
+      "updated_at": "2026-04-20T18:17:05.092645+00:00"
+    },
+    {
+      "id": "b_eb26c4cd4d0e",
+      "project_id": "p_8dc616a35381",
+      "status": "queued",
+      "trigger_source": "example",
+      "started_at": "",
+      "finished_at": "",
+      "error_message": "",
+      "created_at": "2026-04-20T18:29:48.650812+00:00",
+      "updated_at": "2026-04-20T18:29:48.650818+00:00"
+    },
+    {
+      "id": "b_8f58d7d09663",
+      "project_id": "p_15a8ee2c44c5",
+      "status": "queued",
+      "trigger_source": "example",
+      "started_at": "",
+      "finished_at": "",
+      "error_message": "",
+      "created_at": "2026-04-21T19:02:34.749018+00:00",
+      "updated_at": "2026-04-21T19:02:34.749023+00:00"
+    },
+    {
+      "id": "b_30d80695ba54",
+      "project_id": "p_0772b8ede1d0",
+      "status": "queued",
+      "trigger_source": "example",
+      "started_at": "",
+      "finished_at": "",
+      "error_message": "",
+      "created_at": "2026-04-21T19:04:26.244749+00:00",
+      "updated_at": "2026-04-21T19:04:26.244756+00:00"
+    }
+  ],
+  "artifacts": []
+}

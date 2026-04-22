@@ -1,0 +1,56 @@
+what is ity for? final bui;dversion: '3.8'
+
+services:
+  # NeuralBook API Server
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: neuralbook-api
+    ports:
+      - "${NEURALBOOK_PORT:-8000}:8000"
+    environment:
+      NEURALBOOK_HOST: "0.0.0.0"
+      NEURALBOOK_PORT: "8000"
+      NEURALBOOK_STORE_PATH: "/data/store.json"
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - neuralbook_data:/data
+      - ./examples:/app/examples
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    networks:
+      - neuralbook
+
+  # Optional: Development environment with volume mounts
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: neuralbook-dev
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+    environment:
+      NEURALBOOK_STORE_PATH: "/data/store.json"
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - .:/app
+      - neuralbook_data:/data
+    networks:
+      - neuralbook
+    profiles:
+      - dev
+
+volumes:
+  neuralbook_data:
+    driver: local
+
+networks:
+  neuralbook:
+    driver: bridge

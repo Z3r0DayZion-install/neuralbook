@@ -1,0 +1,269 @@
+Metadata-Version: 2.4
+Name: neuralbook
+Version: 1.0.0
+Summary: Create encrypted, integrity-verified interactive digital books. Publish with confidence.
+Author-email: NeuralBook Contributors <hello@neuralbook.dev>
+Maintainer-email: NeuralBook Contributors <hello@neuralbook.dev>
+License-Expression: MIT
+Project-URL: Homepage, https://neuralbook.dev
+Project-URL: Documentation, https://docs.neuralbook.dev
+Project-URL: Repository, https://github.com/neuralbook/neuralbook
+Project-URL: Bug Tracker, https://github.com/neuralbook/neuralbook/issues
+Project-URL: Release Notes, https://github.com/neuralbook/neuralbook/releases
+Keywords: encryption,publishing,digital-books,security,integrity,cryptography,aes-256-gcm,content-creation
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Information Technology
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Office/Business :: News/Diary
+Classifier: Topic :: Security :: Cryptography
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing :: Markup
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: cryptography==46.0.7
+Requires-Dist: pyyaml==6.0.1
+Requires-Dist: click==8.3.2
+Requires-Dist: markdown2==2.4.13
+Provides-Extra: dev
+Requires-Dist: pytest==9.0.2; extra == "dev"
+Requires-Dist: pytest-cov==4.1.0; extra == "dev"
+Requires-Dist: black==24.4.2; extra == "dev"
+Requires-Dist: isort==5.13.2; extra == "dev"
+Requires-Dist: flake8==7.0.0; extra == "dev"
+Requires-Dist: mypy==1.10.0; extra == "dev"
+Requires-Dist: tox==4.15.1; extra == "dev"
+Provides-Extra: server
+Requires-Dist: fastapi==0.136.0; extra == "server"
+Requires-Dist: uvicorn==0.29.0; extra == "server"
+Requires-Dist: pydantic==2.7.1; extra == "server"
+Provides-Extra: docker
+Requires-Dist: docker==7.0.0; extra == "docker"
+Provides-Extra: all
+Requires-Dist: pytest==9.0.2; extra == "all"
+Requires-Dist: pytest-cov==4.1.0; extra == "all"
+Requires-Dist: black==24.4.2; extra == "all"
+Requires-Dist: isort==5.13.2; extra == "all"
+Requires-Dist: flake8==7.0.0; extra == "all"
+Requires-Dist: mypy==1.10.0; extra == "all"
+Requires-Dist: fastapi==0.136.0; extra == "all"
+Requires-Dist: uvicorn==0.29.0; extra == "all"
+Requires-Dist: docker==7.0.0; extra == "all"
+Dynamic: license-file
+
+# NeuralBook Platform
+
+**Create encrypted, integrity-verified interactive digital books with modern tooling.**
+
+NeuralBook is an open-source platform for authors, creators, and organizations who want to:
+- 📚 Create interactive digital content with professional encryption
+- 🔐 Verify content integrity with tamper-detection
+- 🌐 Distribute across Windows, macOS, Linux, and web
+- 🎯 Automate build, certification, and release workflows
+- 📦 Stay offline-first with local-first architecture
+
+---
+
+## Quick Start (5 Minutes)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/neuralbook.git
+cd neuralbook
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Generate encryption key
+node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"
+# Or: python -c "import os; print(os.urandom(48).hex())"
+```
+
+### Create Your First Title
+
+```bash
+# Set encryption key for session
+export NEURALBOOK_ENCRYPTION_SEED="your-key-here"
+
+# Initialize a new title
+python scripts/neuralbook_init.py --title "My First Book" --output ./my-book
+
+# Add content
+cp your-content.md ./my-book/content/draft.md
+
+# Build
+python scripts/neuralbook_build.py --project ./my-book
+
+# Verify integrity
+python scripts/neuralbook_verify.py --project ./my-book
+```
+
+---
+
+## Platform Features
+
+### 🔒 Security & Integrity
+
+- **AES-256-GCM Encryption** — Industry-standard symmetric encryption with unique IVs
+- **SHA-256 Manifests** — Content integrity verification on every read
+- **Tamper-Detection** — Immutable audit chain logs all mutations
+- **Key Management** — Secret handling via environment variables, files, or KMS
+
+### 🚀 Build Automation
+
+- **Cross-Platform** — Windows, macOS, Linux with zero code changes
+- **Deterministic Builds** — Identical output for identical input (proof-of-work)
+- **One-Command Release** — Build → Test → Certify → Package → Sign → Release
+- **CI/CD Ready** — GitHub Actions, GitLab CI, or self-hosted
+
+### 📖 Content Pipeline
+
+- **Markdown Support** — Write in Markdown, auto-compile to encrypted HTML/EPUB/PDF
+- **Structured Encryption** — Per-chapter or per-section granularity
+- **Media Handling** — Images, audio, video with embedded encryption
+- **Structured Data** — YAML frontmatter for metadata, versioning, licensing
+
+### ✅ Quality Gates
+
+- **Accessibility Audit** — WCAG 2.1 AA compliance checks
+- **Performance Budget** — Size constraints per file and aggregate
+- **Security Scans** — Dependency audits, OWASP checks
+- **API Contract Verification** — Deterministic route testing
+- **Trend Stability** — Historical pass-rate trending
+
+---
+
+## Project Structure
+
+```
+neuralbook/
+├── scripts/                    # CLI tools & automation
+│   ├── neuralbook_init.py      # Initialize new title
+│   ├── neuralbook_build.py     # Build and encrypt content
+│   ├── neuralbook_verify.py    # Verify integrity
+│   ├── neuralbook_cert.py      # Run certification gates
+│   └── release_all.py          # Full release automation
+├── src/neuralbook/             # Core platform library
+│   ├── __init__.py
+│   ├── encryption.py           # AES-256-GCM implementation
+│   ├── manifest.py             # SHA-256 integrity verification
+│   ├── build.py                # Content pipeline
+│   └── api.py                  # Platform API routes
+├── examples/                   # Starter templates
+│   ├── hello-world/            # Minimal example
+│   ├── signal-engine/          # Split-pane console demo
+│   └── README.md               # Example documentation
+├── tests/                      # Test suite
+│   ├── test_encryption.py
+│   ├── test_build.py
+│   ├── test_api.py
+│   └── conftest.py
+├── docs/                       # Documentation & landing page
+│   ├── index.html              # GitHub Pages landing
+│   ├── ARCHITECTURE.md         # Design & rationale
+│   ├── API.md                  # Platform API docs
+│   └── DEPLOYMENT.md           # Production runbook
+├── requirements.txt            # Python dependencies
+├── README.md                   # This file
+├── LICENSE                     # MIT or Apache 2.0
+└── .github/
+    └── workflows/
+        ├── test.yml            # Test on push
+        ├── release.yml         # CD on tag
+        └── docs.yml            # Build & deploy docs
+```
+
+---
+
+## Documentation
+
+- **[Getting Started](./docs/GETTING_STARTED.md)** — 30-minute walkthrough
+- **[Architecture](./docs/ARCHITECTURE.md)** — Design decisions & encryption model
+- **[API Reference](./docs/API.md)** — Platform routes & contracts
+- **[Deployment Guide](./docs/DEPLOYMENT.md)** — Production runbook
+- **[Examples](./examples/)** — Starter projects
+
+---
+
+## Use Cases
+
+### 📚 Authors & Publishers
+
+Publish high-integrity interactive books with:
+- Encrypted chapters (anti-piracy)
+- Checkpoint challenges (engagement)
+- Reader analytics (privacy-first)
+- Multi-tier pricing (freemium → premium)
+
+### 🏢 Enterprises & Consultants
+
+Distribute proprietary content:
+- White-label builds (custom branding)
+- License key management (subscription)
+- Audit trails (compliance)
+- Offline delivery (air-gapped networks)
+
+### 🎓 Educators & Creators
+
+Build interactive courses:
+- Self-paced modules
+- Progress tracking (encrypted)
+- Downloadable certificates
+- Community-gated access
+
+---
+
+## Licensing
+
+NeuralBook is dual-licensed:
+
+- **Open Source:** MIT License (free for personal/educational use)
+- **Commercial:** Custom licensing for enterprise use
+
+See [LICENSE](./LICENSE) for details.
+
+---
+
+## Contributing
+
+Contributions welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+
+Code style: Black, isort, flake8. Tests required for all PRs.
+
+---
+
+## Support
+
+- **Issues:** [GitHub Issues](https://github.com/yourusername/neuralbook/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/yourusername/neuralbook/discussions)
+- **Documentation:** [docs/](./docs/)
+- **Examples:** [examples/](./examples/)
+
+---
+
+## Roadmap
+
+- [x] Core encryption & build pipeline
+- [x] Deterministic builds & release automation
+- [x] Quality gates (accessibility, performance, security)
+- [ ] Web UI for content authoring
+- [ ] Cloud hosting & distribution
+- [ ] Mobile app SDK (iOS/Android)
+- [ ] Multi-language support
+- [ ] Community marketplace
+
+---
+
+**Built with integrity. Designed for privacy. Free as in freedom.**
