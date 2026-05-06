@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NeuralBook Revocations",
+  "type": "object",
+  "required": ["revoked_key_ids"],
+  "properties": {
+    "revoked_key_ids": {
+      "type": "array",
+      "minItems": 0,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}
+

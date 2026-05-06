@@ -1,3 +1,0 @@
-[console_scripts]
-neuralbook = neuralbook.cli:main
-neuralbook-api = neuralbook.api_router:main

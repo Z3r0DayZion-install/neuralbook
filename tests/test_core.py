@@ -8,12 +8,17 @@ from pathlib import Path
 import pytest
 
 from neuralbook.core import (
+    EmailStore,
     Store,
+    add_artifact,
+    capture_email,
     create_build,
     create_project,
     get_build,
     get_project,
+    list_artifacts_for_build,
     list_projects,
+    update_build,
     update_project,
 )
 
@@ -37,7 +42,7 @@ class TestStore:
     def test_store_persistence(self, temp_store):
         """Test that store persists data."""
         store1 = Store(temp_store)
-        project1 = create_project(store1, title="Book 1", slug="book-1")
+        create_project(store1, title="Book 1", slug="book-1")
 
         # Load with new store instance
         store2 = Store(temp_store)
@@ -243,6 +248,64 @@ class TestGetBuild:
         store = Store(temp_store)
         result = get_build(store, "nonexistent_id")
         assert result is None
+
+
+class TestUpdateBuild:
+    """Tests for updating builds."""
+
+    def test_update_build_success(self, temp_store):
+        store = Store(temp_store)
+        project = create_project(store, title="Book", slug="book")
+        build = create_build(store, project["id"])
+
+        updated = update_build(store, build["id"], status="success", finished_at="done")
+
+        assert updated["status"] == "success"
+        assert updated["finished_at"] == "done"
+        assert updated["updated_at"]
+
+    def test_update_build_not_found_raises(self, temp_store):
+        store = Store(temp_store)
+        with pytest.raises(ValueError, match="build not found"):
+            update_build(store, "missing-build", status="failed")
+
+
+class TestArtifacts:
+    """Tests for artifact persistence and filtering."""
+
+    def test_add_and_list_artifacts_for_build(self, temp_store):
+        store = Store(temp_store)
+        project = create_project(store, title="Book", slug="book")
+        build1 = create_build(store, project["id"])
+        build2 = create_build(store, project["id"])
+
+        add_artifact(store, build1["id"], "html", "out/a.html", "a" * 64, 100)
+        add_artifact(store, build2["id"], "html", "out/b.html", "b" * 64, 200)
+
+        artifacts = list_artifacts_for_build(store, build1["id"])
+        assert len(artifacts) == 1
+        assert artifacts[0]["build_id"] == build1["id"]
+        assert artifacts[0]["bytes"] == 100
+
+
+class TestEmailCapture:
+    """Tests for email capture behavior."""
+
+    def test_email_store_load_invalid_json_defaults(self, temp_store):
+        bad = temp_store.parent / "emails_bad.json"
+        bad.write_text("{broken", encoding="utf-8")
+        es = EmailStore(bad)
+        assert es.load() == {"emails": []}
+
+    def test_capture_email_and_duplicate(self, temp_store):
+        email_path = temp_store.parent / "emails.json"
+        entry, existed = capture_email(email_path, "user@example.com", "landing")
+        assert existed is False
+        assert entry["email"] == "user@example.com"
+
+        second, existed_again = capture_email(email_path, "user@example.com", "landing")
+        assert existed_again is True
+        assert second["email"] == "user@example.com"
 
 
 class TestProjectIdGeneration:

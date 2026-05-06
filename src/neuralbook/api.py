@@ -11,10 +11,10 @@ Provides REST endpoints for:
 import json
 import re
 import uuid
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Optional, Tuple, cast
 
 _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 VERSION = "1.0.0"
@@ -37,10 +37,10 @@ class Project:
     slug: str
     description: str = ""
     status: str = "draft"
-    created_at: str = None
-    updated_at: str = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.created_at is None:
             self.created_at = now_iso()
         if self.updated_at is None:
@@ -52,10 +52,10 @@ class Build:
     id: str
     project_id: str
     status: str = "pending"  # pending, building, success, failed
-    created_at: str = None
-    completed_at: str = None
+    created_at: Optional[str] = None
+    completed_at: Optional[str] = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.created_at is None:
             self.created_at = now_iso()
 
@@ -63,7 +63,7 @@ class Build:
 class Store:
     """JSON-based data store for projects and builds."""
 
-    def __init__(self, path: Path):
+    def __init__(self, path: Path) -> None:
         self.path = Path(path)
 
     def load(self) -> Dict[str, Any]:
@@ -71,7 +71,7 @@ class Store:
         if not self.path.exists():
             return {"projects": [], "builds": []}
         try:
-            return json.loads(self.path.read_text(encoding="utf-8"))
+            return cast(Dict[str, Any], json.loads(self.path.read_text(encoding="utf-8")))
         except (json.JSONDecodeError, FileNotFoundError):
             return {"projects": [], "builds": []}
 
@@ -86,7 +86,7 @@ def _json_body(raw: bytes) -> Dict[str, Any]:
     if not raw:
         return {}
     try:
-        return json.loads(raw.decode("utf-8"))
+        return cast(Dict[str, Any], json.loads(raw.decode("utf-8")))
     except (json.JSONDecodeError, UnicodeDecodeError):
         return {}
 
@@ -95,10 +95,9 @@ def route_request(
     method: str,
     path: str,
     body: bytes,
-    store_path: Path = None,
+    store_path: Optional[Path] = None,
 ) -> Tuple[int, Dict[str, Any]]:
-    """
-    Route HTTP request to appropriate handler.
+    """Route HTTP request to appropriate handler.
 
     Args:
         method: HTTP method (GET, POST, PUT, DELETE)
@@ -145,7 +144,7 @@ def route_request(
             if any(p.get("slug") == slug for p in store_data.get("projects", [])):
                 return 409, {"error": "slug already exists"}
 
-            project = {
+            project: Dict[str, Any] = {
                 "id": new_id("proj"),
                 "title": title,
                 "slug": slug,
@@ -170,26 +169,26 @@ def route_request(
 
         # GET /v1/projects/:id
         if len(parts) == 3 and method == "GET":
-            data = store.load()
-            for proj in data.get("projects", []):
+            store_data = store.load()
+            for proj in store_data.get("projects", []):
                 if proj.get("id") == project_id:
-                    return 200, proj
+                    return 200, cast(Dict[str, Any], proj)
             return 404, {"error": "project not found"}
 
         # POST /v1/projects/:id/builds
         if len(parts) == 4 and parts[3] == "builds" and method == "POST":
-            data = store.load()
-            if not any(p.get("id") == project_id for p in data.get("projects", [])):
+            store_data = store.load()
+            if not any(p.get("id") == project_id for p in store_data.get("projects", [])):
                 return 404, {"error": "project not found"}
 
-            build = {
+            build: Dict[str, Any] = {
                 "id": new_id("build"),
                 "project_id": project_id,
                 "status": "pending",
                 "created_at": now_iso(),
             }
-            data.setdefault("builds", []).append(build)
-            store.save(data)
+            store_data.setdefault("builds", []).append(build)
+            store.save(store_data)
             return 202, build
 
         return 404, {"error": "not found"}
@@ -201,10 +200,10 @@ def route_request(
             return 404, {"error": "not found"}
 
         build_id = parts[2]
-        data = store.load()
-        for build in data.get("builds", []):
-            if build.get("id") == build_id:
-                return 200, build
+        store_data = store.load()
+        for b in store_data.get("builds", []):
+            if b.get("id") == build_id:
+                return 200, cast(Dict[str, Any], b)
         return 404, {"error": "build not found"}
 
     # Email capture

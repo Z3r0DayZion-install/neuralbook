@@ -24,7 +24,7 @@ from pathlib import Path
 from neuralbook import Store, create_build, create_project
 
 
-def main():
+def main() -> int:
     """Create and build a simple encrypted book."""
 
     # Setup
@@ -41,7 +41,7 @@ def main():
     print("\n[1/4] Creating project...")
     store = Store(store_path)
 
-    # Use unique slug to avoid conflicts
+    # Use unique slug to avoid conflicts on repeated runs
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     unique_slug = f"hello-world-{timestamp}"
 
@@ -51,56 +51,32 @@ def main():
         slug=unique_slug,
         theme="cyberpunk",
     )
-    print(f"  ✓ Project created: {project['id']}")
+    print(f"  Project created: {project['id']}")
     print(f"    Title: {project['title']}")
-    print(f"    Slug: {project['slug']}")
+    print(f"    Slug:  {project['slug']}")
 
-    # 2. Add content
-    print("\n[2/4] Adding chapters...")
-    chapter1 = """
-Welcome to NeuralBook!
-
-This is a simple encrypted digital book built with the NeuralBook platform.
-Every chapter is encrypted using AES-256-GCM with integrity verification.
-
-You're reading this in a plaintext example, but in production, this content
-would be protected and delivered securely to authorized readers.
-"""
-
-    chapter2 = """
-What's Next?
-
-Now that you've seen a hello-world example, you can:
-- Explore the API examples
-- Build your own encrypted content
-- Deploy to production infrastructure
-
-The NeuralBook platform makes it simple to create encrypted, verifiable books.
-"""
-
-    # Demonstrate encryption (optional, for demo purposes)
-    print("  ✓ Chapter 1: Introduction")
-    print("  ✓ Chapter 2: Next Steps")
+    # 2. Describe chapters (content would be encrypted in a real pipeline)
+    print("\n[2/4] Defining chapters...")
+    print("  Chapter 1: Introduction")
+    print("  Chapter 2: Next Steps")
 
     # 3. Trigger a build
     print("\n[3/4] Triggering build...")
     build = create_build(store, project_id=project["id"], trigger_source="example")
-    print(f"  ✓ Build queued: {build['id']}")
-    print(f"    Status: {build['status']}")
+    print(f"  Build queued: {build['id']}")
+    print(f"    Status:  {build['status']}")
     print(f"    Created: {build['created_at']}")
 
     # 4. Output results
     print("\n[4/4] Build complete!")
-    print(f"  📦 Output directory: {output_dir.resolve()}")
-    print(f"  📄 Store location: {store_path.resolve()}")
+    print(f"  Output directory: {output_dir.resolve()}")
+    print(f"  Store location:   {store_path.resolve()}")
 
     print("\n" + "=" * 60)
     print("Success! Your book is ready.")
     print("=" * 60)
     print("\nNext steps:")
-    print(
-        "  1. Review the project in: python -c \"import json; print(json.load(open('hello-world-build/store.json'), indent=2))\""
-    )
+    print("  1. Review the project store: cat hello-world-build/store.json")
     print("  2. Check example 02_api_server.py for API usage")
     print("  3. See example 03_batch_build.py for building multiple projects")
 

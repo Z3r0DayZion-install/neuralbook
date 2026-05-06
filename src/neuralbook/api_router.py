@@ -5,10 +5,11 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from typing import Any, Dict, Optional, Tuple, cast
 
 from .core import (
-    capture_email,
     Store,
+    capture_email,
     create_build,
     create_project,
     get_build,
@@ -23,16 +24,32 @@ _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 VERSION = "1.0.0"
 
 
-def _json_body(raw: bytes) -> dict:
+def _json_body(raw: bytes) -> Dict[str, Any]:
     if not raw:
         return {}
     try:
-        return json.loads(raw.decode("utf-8"))
+        return cast(Dict[str, Any], json.loads(raw.decode("utf-8")))
     except (json.JSONDecodeError, UnicodeDecodeError):
         return {}
 
 
-def route_request(method: str, path: str, body: bytes, store_path: Path) -> tuple[int, dict]:
+def route_request(
+    method: str,
+    path: str,
+    body: bytes,
+    store_path: Path,
+) -> Tuple[int, Dict[str, Any]]:
+    """Route an HTTP request to the appropriate handler.
+
+    Args:
+        method: HTTP verb (GET, POST, PUT, …)
+        path: URL path, may include query string
+        body: Raw request body bytes
+        store_path: Filesystem path to the JSON data store
+
+    Returns:
+        (http_status_code, response_body_dict)
+    """
     store = Store(store_path)
     email_path = store_path.parent / "captured_emails.json"
 
@@ -41,7 +58,11 @@ def route_request(method: str, path: str, body: bytes, store_path: Path) -> tupl
 
     # Root
     if path == "/" and method == "GET":
-        return 200, {"message": "NeuralBook Platform API", "version": VERSION, "docs": "/docs"}
+        return 200, {
+            "message": "NeuralBook Platform API",
+            "version": VERSION,
+            "docs": "/docs",
+        }
 
     # Health checks
     if path in ("/health", "/healthz") and method == "GET":
@@ -50,7 +71,7 @@ def route_request(method: str, path: str, body: bytes, store_path: Path) -> tupl
     # Projects collection
     if path == "/v1/projects":
         if method == "GET":
-            return 200, list_projects(store)
+            return 200, list_projects(store)  # type: ignore[return-value]
         if method == "POST":
             data = _json_body(body)
             title = str(data.get("title", "")).strip()
@@ -67,19 +88,20 @@ def route_request(method: str, path: str, body: bytes, store_path: Path) -> tupl
 
     # Projects resource
     if path.startswith("/v1/projects/"):
-        parts = [p for p in path.split("/") if p]  # ['v1', 'projects', <id>] or more
+        # ['v1', 'projects', <id>] or ['v1', 'projects', <id>, 'build']
+        parts = [p for p in path.split("/") if p]
         project_id = parts[2] if len(parts) > 2 else ""
 
         # /v1/projects/:id
         if len(parts) == 3:
             if method == "GET":
-                project = get_project(store, project_id)
-                if not project:
+                proj_get: Optional[Dict[str, Any]] = get_project(store, project_id)
+                if not proj_get:
                     return 404, {"error": "project not found"}
-                return 200, project
+                return 200, proj_get
             if method == "PUT":
-                project = get_project(store, project_id)
-                if not project:
+                maybe_proj: Optional[Dict[str, Any]] = get_project(store, project_id)
+                if not maybe_proj:
                     return 404, {"error": "project not found"}
                 data = _json_body(body)
                 updated = update_project(
@@ -91,7 +113,7 @@ def route_request(method: str, path: str, body: bytes, store_path: Path) -> tupl
                     content=data.get("content"),
                     pricing=data.get("pricing"),
                 )
-                return 200, updated
+                return 200, updated if updated is not None else {}
             return 405, {"error": "method not allowed"}
 
         # /v1/projects/:id/build  or  /v1/projects/:id/builds
@@ -110,15 +132,16 @@ def route_request(method: str, path: str, body: bytes, store_path: Path) -> tupl
     if path.startswith("/v1/builds/"):
         parts = [p for p in path.split("/") if p]
         if len(parts) != 3 or method != "GET":
-            return 404 if method == "GET" else 405, {
-                "error": "not found" if method == "GET" else "method not allowed"
-            }
+            return (
+                404 if method == "GET" else 405,
+                {"error": "not found" if method == "GET" else "method not allowed"},
+            )
         build_id = parts[2]
-        build = get_build(store, build_id)
-        if not build:
+        maybe_build: Optional[Dict[str, Any]] = get_build(store, build_id)
+        if not maybe_build:
             return 404, {"error": "build not found"}
         return 200, {
-            "build": build,
+            "build": maybe_build,
             "artifacts": list_artifacts_for_build(store, build_id),
         }
 

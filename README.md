@@ -1,206 +1,170 @@
-# NeuralBook Platform
+# NeuralBook™ Platform
 
-**Create encrypted, integrity-verified interactive digital books with modern tooling.**
+**Modular, patchable, cryptographically sealed digital books.**
 
-NeuralBook is an open-source platform for authors, creators, and organizations who want to:
-- 📚 Create interactive digital content with professional encryption
-- 🔐 Verify content integrity with tamper-detection
-- 🌐 Distribute across Windows, macOS, Linux, and web
-- 🎯 Automate build, certification, and release workflows
-- 📦 Stay offline-first with local-first architecture
+NeuralBook is an open book format and platform for **living documents** — books that are modular, patchable, sealed, and executable. Unlike static formats (EPUB, PDF), a NeuralBook file is an active interface: each section contains deployable protocols, and the file can receive patches without full replacement.
 
 ---
 
-## Quick Start (5 Minutes)
-
-### Installation
+## Quick Start
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/neuralbook.git
-cd neuralbook
+pip install neuralbook
 
-# Install dependencies
-pip install -r requirements.txt
+# Import a manuscript
+neuralbook nb-import manuscript.txt --title "My Book" --author "Author Name"
 
-# Generate encryption key
-node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"
-# Or: python -c "import os; print(os.urandom(48).hex())"
-```
+# Validate
+neuralbook nb-validate my-book.nbook --level full
 
-### Create Your First Title
+# Cryptographically seal
+neuralbook nb-seal my-book.nbook
 
-```bash
-# Set encryption key for session
-export NEURALBOOK_ENCRYPTION_SEED="your-key-here"
-
-# Initialize a new title
-python scripts/neuralbook_init.py --title "My First Book" --output ./my-book
-
-# Add content
-cp your-content.md ./my-book/content/draft.md
-
-# Build
-python scripts/neuralbook_build.py --project ./my-book
-
-# Verify integrity
-python scripts/neuralbook_verify.py --project ./my-book
+# Export to EPUB or HTML
+neuralbook nb-export my-book.nbook --format epub
+neuralbook nb-export my-book.nbook --format html
 ```
 
 ---
 
-## Platform Features
+## CLI Commands
 
-### 🔒 Security & Integrity
-
-- **AES-256-GCM Encryption** — Industry-standard symmetric encryption with unique IVs
-- **SHA-256 Manifests** — Content integrity verification on every read
-- **Tamper-Detection** — Immutable audit chain logs all mutations
-- **Key Management** — Secret handling via environment variables, files, or KMS
-
-### 🚀 Build Automation
-
-- **Cross-Platform** — Windows, macOS, Linux with zero code changes
-- **Deterministic Builds** — Identical output for identical input (proof-of-work)
-- **One-Command Release** — Build → Test → Certify → Package → Sign → Release
-- **CI/CD Ready** — GitHub Actions, GitLab CI, or self-hosted
-
-### 📖 Content Pipeline
-
-- **Markdown Support** — Write in Markdown, auto-compile to encrypted HTML/EPUB/PDF
-- **Structured Encryption** — Per-chapter or per-section granularity
-- **Media Handling** — Images, audio, video with embedded encryption
-- **Structured Data** — YAML frontmatter for metadata, versioning, licensing
-
-### ✅ Quality Gates
-
-- **Accessibility Audit** — WCAG 2.1 AA compliance checks
-- **Performance Budget** — Size constraints per file and aggregate
-- **Security Scans** — Dependency audits, OWASP checks
-- **API Contract Verification** — Deterministic route testing
-- **Trend Stability** — Historical pass-rate trending
+| Command | Description |
+|---------|-------------|
+| `neuralbook keygen` | Generate encryption seed |
+| `neuralbook init` | Scaffold a new project |
+| `neuralbook build` | Encrypt content and generate manifest |
+| `neuralbook verify` | Verify SHA-256 integrity |
+| `neuralbook info` | Platform info and environment |
+| `neuralbook nb-import` | Import TXT → .nbook format |
+| `neuralbook nb-validate` | Validate .nbook (structure/integrity/format/full) |
+| `neuralbook nb-seal` | Cryptographically seal a .nbook |
+| `neuralbook nb-patch` | Apply a .nbook-patch |
+| `neuralbook nb-info` | Display .nbook metadata and structure |
+| `neuralbook nb-export` | Export .nbook → EPUB or HTML |
 
 ---
+
+## Platform API
+
+Production-ready FastAPI server with auth, rate limiting, and OpenAPI docs.
+
+```bash
+# Install server extras
+pip install "neuralbook[server]"
+
+# Configure
+cp .env.example .env
+# Edit .env with your API keys and settings
+
+# Run
+neuralbook-api
+# Or with Docker
+docker compose up api
+```
+
+### Endpoints
+
+**Creator** (require API key when `NBOOK_API_KEYS` is set):
+- `POST /v1/projects` — Create project
+- `GET /v1/projects` — List projects
+- `GET /v1/projects/{id}` — Get project
+- `PUT /v1/projects/{id}` — Update project
+- `POST /v1/projects/{id}/builds` — Trigger build
+- `GET /v1/builds/{id}` — Get build status
+- `POST /v1/emails` — Capture reader email
+
+**Reader** (public):
+- `GET /books` — List registered books
+- `POST /books` — Register a book
+- `GET /books/{slug}` — Get book metadata
+- `GET /books/{slug}/patches` — List patches
+- `POST /books/{slug}/patches` — Upload patch
+- `GET /books/{slug}/patches/{id}` — Download patch
+- `GET /books/{slug}/latest` — Latest patch info
+- `POST /books/{slug}/verify` — Verify integrity
+
+Interactive docs available at `/docs` (Swagger) and `/redoc`.
+
+---
+
+## Configuration
+
+| Env Var | Default | Description |
+|---------|---------|-------------|
+| `NBOOK_API_KEYS` | (empty = no auth) | Comma-separated API keys for write endpoints |
+| `NBOOK_DATA` | `./nbook_data` | Data directory for books, patches, store |
+| `NBOOK_CORS_ORIGINS` | `*` | Comma-separated allowed origins |
+| `NBOOK_HOST` | `0.0.0.0` | Server bind address |
+| `NBOOK_PORT` | `8000` | Server bind port |
+| `NBOOK_LOG_LEVEL` | `info` | Logging level |
+| `NEURALBOOK_ENCRYPTION_SEED` | (required for build) | AES-256-GCM encryption seed |
+| `NEURALBOOK_PROVENANCE_SIGNING_KEY_HEX` | (optional) | Ed25519 private key hex used to sign provenance |
+| `NEURALBOOK_PROVENANCE_KEY_ID` | `default` | Key id recorded in provenance signature |
+| `NEURALBOOK_PROVENANCE_SIGNERS_JSON` | (optional) | JSON list of multiple signers (`[{key_id,private_key_hex}, ...]`) |
+
+---
+
+## Trust + key rotation
+
+- **Verify demo/internal**:
+  - `neuralbook verify-attestation MANIFEST.json PROVENANCE.json ATTESTATION.json --allow-embedded-public-key`
+- **Verify release/external (strict default)**:
+  - `neuralbook verify-attestation MANIFEST.json PROVENANCE.json ATTESTATION.json --trusted-keys trusted-keys.json --revoked-keys revocations.json`
+- **Manage key files**:
+  - `neuralbook keys init trusted-keys.json revocations.json`
+  - `neuralbook keys add trusted-keys.json --key-id primary-2026-04 --public-key-hex <hex>`
+  - `neuralbook keys revoke revocations.json --key-id primary-2025-12`
+
+More details in `SECURITY.md`.
 
 ## Project Structure
 
 ```
-neuralbook/
-├── scripts/                    # CLI tools & automation
-│   ├── neuralbook_init.py      # Initialize new title
-│   ├── neuralbook_build.py     # Build and encrypt content
-│   ├── neuralbook_verify.py    # Verify integrity
-│   ├── neuralbook_cert.py      # Run certification gates
-│   └── release_all.py          # Full release automation
-├── src/neuralbook/             # Core platform library
-│   ├── __init__.py
-│   ├── encryption.py           # AES-256-GCM implementation
-│   ├── manifest.py             # SHA-256 integrity verification
-│   ├── build.py                # Content pipeline
-│   └── api.py                  # Platform API routes
-├── examples/                   # Starter templates
-│   ├── hello-world/            # Minimal example
-│   ├── signal-engine/          # Split-pane console demo
-│   └── README.md               # Example documentation
-├── tests/                      # Test suite
-│   ├── test_encryption.py
-│   ├── test_build.py
-│   ├── test_api.py
-│   └── conftest.py
-├── docs/                       # Documentation & landing page
-│   ├── index.html              # GitHub Pages landing
-│   ├── ARCHITECTURE.md         # Design & rationale
-│   ├── API.md                  # Platform API docs
-│   └── DEPLOYMENT.md           # Production runbook
-├── requirements.txt            # Python dependencies
-├── README.md                   # This file
-├── LICENSE                     # MIT or Apache 2.0
-└── .github/
-    └── workflows/
-        ├── test.yml            # Test on push
-        ├── release.yml         # CD on tag
-        └── docs.yml            # Build & deploy docs
+neuralbook-public/
+├── src/neuralbook/          # Python SDK
+│   ├── format.py            # NeuralBook format (read/write/patch/seal/validate)
+│   ├── platform_api.py      # FastAPI server (creator + reader endpoints)
+│   ├── cli.py               # Click CLI (11 commands)
+│   ├── export.py            # EPUB + HTML export
+│   ├── encryption.py        # AES-256-GCM encryption
+│   ├── build.py             # Build pipeline
+│   ├── manifest.py          # SHA-256 manifests
+│   └── __init__.py          # Public API
+├── tests/                   # 152 tests
+│   ├── test_format.py       # Format SDK tests
+│   ├── test_export.py       # Export tests
+│   ├── test_platform_api.py # API endpoint tests
+│   └── ...
+├── docs/NB-SPEC-1.0.md     # Format specification
+├── Dockerfile               # Production Docker image
+├── docker-compose.yml       # Docker Compose config
+├── .env.example             # Configuration template
+└── pyproject.toml           # Package metadata
 ```
 
 ---
 
-## Documentation
+## Ecosystem
 
-- **[Getting Started](./docs/GETTING_STARTED.md)** — 30-minute walkthrough
-- **[Architecture](./docs/ARCHITECTURE.md)** — Design decisions & encryption model
-- **[API Reference](./docs/API.md)** — Platform routes & contracts
-- **[Deployment Guide](./docs/DEPLOYMENT.md)** — Production runbook
-- **[Examples](./examples/)** — Starter projects
-
----
-
-## Use Cases
-
-### 📚 Authors & Publishers
-
-Publish high-integrity interactive books with:
-- Encrypted chapters (anti-piracy)
-- Checkpoint challenges (engagement)
-- Reader analytics (privacy-first)
-- Multi-tier pricing (freemium → premium)
-
-### 🏢 Enterprises & Consultants
-
-Distribute proprietary content:
-- White-label builds (custom branding)
-- License key management (subscription)
-- Audit trails (compliance)
-- Offline delivery (air-gapped networks)
-
-### 🎓 Educators & Creators
-
-Build interactive courses:
-- Self-paced modules
-- Progress tracking (encrypted)
-- Downloadable certificates
-- Community-gated access
+- **Python SDK** — `neuralbook` package (CLI + library)
+- **JS/TS SDK** — `@neuralbook/nbook` npm package
+- **Web Reader** — React SPA with drag-drop, sidebar, protocol execution
+- **CI/CD** — GitHub Actions: test → validate → seal → export
 
 ---
 
-## Licensing
+## Development
 
-NeuralBook is dual-licensed:
-
-- **Open Source:** MIT License (free for personal/educational use)
-- **Commercial:** Custom licensing for enterprise use
-
-See [LICENSE](./LICENSE) for details.
-
----
-
-## Contributing
-
-Contributions welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
-
-Code style: Black, isort, flake8. Tests required for all PRs.
+```bash
+pip install -e ".[all,server]"
+pytest tests/ -v
+black --check src/ tests/
+isort --check-only src/ tests/
+```
 
 ---
 
-## Support
+## License
 
-- **Issues:** [GitHub Issues](https://github.com/yourusername/neuralbook/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/yourusername/neuralbook/discussions)
-- **Documentation:** [docs/](./docs/)
-- **Examples:** [examples/](./examples/)
-
----
-
-## Roadmap
-
-- [x] Core encryption & build pipeline
-- [x] Deterministic builds & release automation
-- [x] Quality gates (accessibility, performance, security)
-- [ ] Web UI for content authoring
-- [ ] Cloud hosting & distribution
-- [ ] Mobile app SDK (iOS/Android)
-- [ ] Multi-language support
-- [ ] Community marketplace
-
----
-
-**Built with integrity. Designed for privacy. Free as in freedom.**
+MIT License. NeuralBook™ trademark reserved.

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NeuralBook Manifest",
+  "type": "object",
+  "required": ["title", "version", "generated", "files", "root_hash"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "minLength": 1 },
+    "generated": { "type": "string", "minLength": 1 },
+    "root_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "files": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["sha256", "plaintext_size", "encrypted_size"],
+        "properties": {
+          "sha256": { "type": "string", "minLength": 64, "maxLength": 64 },
+          "plaintext_size": { "type": "integer", "minimum": 0 },
+          "encrypted_size": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

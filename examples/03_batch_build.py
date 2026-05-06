@@ -19,12 +19,13 @@ Usage:
 import json
 import sys
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 from neuralbook import Store, create_build, create_project, list_projects
 
 
-def main():
+def main() -> int:
     """Create and build multiple projects."""
 
     output_dir = Path(tempfile.mkdtemp(prefix="neuralbook-batch-"))
@@ -76,7 +77,7 @@ def main():
             theme=project_spec.get("theme", "cyberpunk"),
         )
         created_projects.append(project)
-        print(f"  [{i}/{len(projects_to_create)}] ✓ {project['title']}")
+        print(f"  [{i}/{len(projects_to_create)}] {project['title']}")
         print(f"             ID: {project['id']}")
 
     # 2. Trigger builds for all projects
@@ -86,16 +87,16 @@ def main():
     for i, project in enumerate(created_projects, 1):
         build = create_build(store, project_id=project["id"], trigger_source="batch-example")
         builds.append(build)
-        print(f"  [{i}/{len(created_projects)}] ✓ Build queued for {project['title']}")
+        print(f"  [{i}/{len(created_projects)}] Build queued for {project['title']}")
         print(f"             Build ID: {build['id']}")
-        print(f"             Status: {build['status']}")
+        print(f"             Status:   {build['status']}")
 
     # 3. Generate project manifest
-    print(f"\n[3] Generating project manifest...\n")
+    print("\n[3] Generating project manifest...\n")
 
     all_projects = list_projects(store)
     manifest = {
-        "generated_at": __import__("datetime").datetime.utcnow().isoformat(),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
         "total_projects": len(all_projects),
         "projects": [
             {
@@ -110,25 +111,24 @@ def main():
     }
 
     manifest_path = output_dir / "manifest.json"
-    manifest_path.write_text(json.dumps(manifest, indent=2))
-    print(f"  ✓ Manifest written to: {manifest_path}")
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    print(f"  Manifest written to: {manifest_path}")
 
     # 4. Summary
     print("\n" + "=" * 60)
     print("Batch Build Complete!")
     print("=" * 60)
-    print(f"\n📊 Summary:")
+    print("\nSummary:")
     print(f"  Projects created: {len(created_projects)}")
     print(f"  Builds triggered: {len(builds)}")
-    print(f"  Total in store: {len(all_projects)}")
-    print(f"\n📂 Output:")
-    print(f"  Store: {store_path.resolve()}")
+    print(f"  Total in store:   {len(all_projects)}")
+    print("\nOutput:")
+    print(f"  Store:    {store_path.resolve()}")
     print(f"  Manifest: {manifest_path.resolve()}")
-
-    print(f"\n💡 Next steps:")
+    print("\nNext steps:")
     print(f"  1. View the manifest: cat {manifest_path}")
-    print(f"  2. Try the API server: python 02_api_server.py")
-    print(f"  3. Query for a specific project through the API")
+    print("  2. Try the API server: python 02_api_server.py")
+    print("  3. Query for a specific project through the API")
 
     return 0
 

@@ -71,7 +71,8 @@ dev = [
 server = [
     "fastapi==0.136.0",
     "uvicorn==0.29.0",
-    "pydantic==2.7.1",
+    "pydantic>=2.9.0",
+    "slowapi==0.1.9",
 ]
 docker = [
     "docker==7.0.0",
@@ -90,7 +91,7 @@ all = [
 
 [project.scripts]
 neuralbook = "neuralbook.cli:main"
-neuralbook-api = "neuralbook.api_router:main"
+neuralbook-api = "neuralbook.platform_api:start_server"
 
 [tool.setuptools]
 packages = ["neuralbook"]
@@ -112,13 +113,17 @@ py_version = 39
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v --cov=src/neuralbook --cov-report=html --cov-report=term-missing"
+addopts = "-v --cov=neuralbook --cov-report=term-missing"
 
 [tool.coverage.run]
-source = ["src/neuralbook"]
+source = ["neuralbook"]
 
 [tool.mypy]
 python_version = "3.9"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = ["E203", "W503"]

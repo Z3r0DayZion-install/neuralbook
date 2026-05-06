@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NeuralBook Provenance",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "generated_at",
+    "build_started_at",
+    "title",
+    "build_type",
+    "key_source",
+    "project_dir",
+    "content_dir",
+    "manifest_root_hash",
+    "manifest_sha256",
+    "source_entries",
+    "build_fingerprint"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "minLength": 1 },
+    "build_started_at": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "build_type": { "type": "string", "minLength": 1 },
+    "key_source": { "type": "string", "minLength": 1 },
+    "project_dir": { "type": "string", "minLength": 1 },
+    "content_dir": { "type": "string", "minLength": 1 },
+    "manifest_root_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "manifest_sha256": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "build_fingerprint": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "source_entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "relative_path",
+          "plaintext_sha256",
+          "plaintext_size",
+          "encrypted_sha256",
+          "encrypted_size"
+        ],
+        "properties": {
+          "relative_path": { "type": "string", "minLength": 1 },
+          "plaintext_sha256": { "type": "string", "minLength": 64, "maxLength": 64 },
+          "plaintext_size": { "type": "integer", "minimum": 0 },
+          "encrypted_sha256": { "type": "string", "minLength": 64, "maxLength": 64 },
+          "encrypted_size": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "required": ["algorithm", "key_id", "fingerprint_signature_hex", "public_key_hex"],
+      "properties": {
+        "algorithm": { "type": "string", "const": "ed25519" },
+        "key_id": { "type": "string", "minLength": 1 },
+        "fingerprint_signature_hex": { "type": "string", "minLength": 128, "maxLength": 128 },
+        "public_key_hex": { "type": "string", "minLength": 64, "maxLength": 64 }
+      }
+    },
+    "signatures": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["algorithm", "key_id", "fingerprint_signature_hex", "public_key_hex"],
+        "properties": {
+          "algorithm": { "type": "string", "const": "ed25519" },
+          "key_id": { "type": "string", "minLength": 1 },
+          "fingerprint_signature_hex": { "type": "string", "minLength": 128, "maxLength": 128 },
+          "public_key_hex": { "type": "string", "minLength": 64, "maxLength": 64 }
+        }
+      }
+    }
+  }
+}

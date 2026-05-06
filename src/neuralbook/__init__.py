@@ -28,6 +28,15 @@ from .encryption import (
     encrypt_content,
     encrypt_file,
 )
+from .export import export_epub, export_html
+from .format import (
+    NeuralBookDocument,
+    import_txt,
+    validate_format,
+    validate_full,
+    validate_integrity,
+    validate_structure,
+)
 from .manifest import generate_manifest, verify_manifest
 
 __all__ = [
@@ -54,4 +63,14 @@ __all__ = [
     "list_projects",
     "update_project",
     "list_artifacts_for_build",
+    # NeuralBook Format SDK
+    "NeuralBookDocument",
+    "import_txt",
+    "validate_full",
+    "validate_format",
+    "validate_integrity",
+    "validate_structure",
+    # Export
+    "export_epub",
+    "export_html",
 ]

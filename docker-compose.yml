@@ -1,22 +1,22 @@
-what is ity for? final bui;dversion: '3.8'
+version: '3.8'
 
 services:
-  # NeuralBook API Server
   api:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: neuralbook-api
     ports:
-      - "${NEURALBOOK_PORT:-8000}:8000"
+      - "${NBOOK_PORT:-8000}:8000"
     environment:
-      NEURALBOOK_HOST: "0.0.0.0"
-      NEURALBOOK_PORT: "8000"
-      NEURALBOOK_STORE_PATH: "/data/store.json"
+      NBOOK_HOST: "0.0.0.0"
+      NBOOK_PORT: "8000"
+      NBOOK_DATA: "/data"
+      NBOOK_API_KEYS: "${NBOOK_API_KEYS:-}"
+      NBOOK_CORS_ORIGINS: "${NBOOK_CORS_ORIGINS:-*}"
       PYTHONUNBUFFERED: "1"
     volumes:
       - neuralbook_data:/data
-      - ./examples:/app/examples
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
@@ -27,7 +27,6 @@ services:
     networks:
       - neuralbook
 
-  # Optional: Development environment with volume mounts
   dev:
     build:
       context: .
@@ -37,7 +36,7 @@ services:
     stdin_open: true
     tty: true
     environment:
-      NEURALBOOK_STORE_PATH: "/data/store.json"
+      NBOOK_DATA: "/data"
       PYTHONUNBUFFERED: "1"
     volumes:
       - .:/app

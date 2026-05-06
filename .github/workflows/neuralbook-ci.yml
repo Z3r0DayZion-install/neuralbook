@@ -1,0 +1,120 @@
+name: NeuralBook CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install with all extras
+        run: pip install -e ".[all,server]"
+
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
+
+      - name: Lint (black check)
+        run: black --check src/ tests/
+
+      - name: Lint (isort check)
+        run: isort --check-only src/ tests/
+
+      - name: Provenance gate
+        run: python scripts/verify_provenance_gate.py
+
+      - name: Release key policy gate
+        run: python scripts/verify_release_key_policy.py
+
+      - name: Artifact schema gate
+        run: python scripts/verify_artifact_schemas.py
+
+      - name: Release verify-attestation strict mode smoke test
+        run: |
+          python -c "from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey; k=Ed25519PrivateKey.generate(); print(k.private_bytes_raw().hex())" > /tmp/priv.hex
+          export NEURALBOOK_PROVENANCE_SIGNING_KEY_HEX=$(cat /tmp/priv.hex)
+          export NEURALBOOK_PROVENANCE_KEY_ID=ci-smoke
+          export NEURALBOOK_ENCRYPTION_SEED=seed-abcdefghijklmnopqrstuvwxyz1234567890
+          mkdir -p /tmp/nb/content
+          echo "ci release smoke" > /tmp/nb/content/chapter-01.md
+          python -c "import json; from pathlib import Path; from neuralbook.build import build_project; r=build_project(Path('/tmp/nb'), title_config={'title':'CISmoke'}, build_type='release'); print(json.dumps(r)); assert r['status']=='success'"
+          # Build trusted registry from embedded signature's public key
+          python -c "import json; from pathlib import Path; p=json.loads((Path('/tmp/nb/build/PROVENANCE_CISmoke.json')).read_text(encoding='utf-8')); Path('/tmp/trusted.json').write_text(json.dumps({'keys':[{'key_id':p['signature']['key_id'],'public_key_hex':p['signature']['public_key_hex']}]}, indent=2)+'\n', encoding='utf-8')"
+          neuralbook verify-attestation /tmp/nb/build/MANIFEST_CISmoke.json /tmp/nb/build/PROVENANCE_CISmoke.json /tmp/nb/build/ATTESTATION_CISmoke.json --trusted-keys /tmp/trusted.json
+
+  build-books:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install NeuralBook
+        run: pip install -e .
+
+      - name: Find .nbook files
+        id: find
+        run: |
+          files=$(find . -name '*.nbook' -not -path './.git/*' | head -20)
+          echo "files=$files" >> $GITHUB_OUTPUT
+          if [ -z "$files" ]; then
+            echo "No .nbook files found — checking for .txt manuscripts"
+            txt_files=$(find . -name '*_Production.txt' -not -path './.git/*' | head -5)
+            echo "txt_files=$txt_files" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Import TXT manuscripts
+        if: steps.find.outputs.txt_files != ''
+        run: |
+          for f in ${{ steps.find.outputs.txt_files }}; do
+            echo "Importing: $f"
+            neuralbook nb-import "$f" --title "$(basename $f _Production.txt)"
+          done
+
+      - name: Validate .nbook files
+        if: steps.find.outputs.files != '' || steps.find.outputs.txt_files != ''
+        run: |
+          for f in $(find . -name '*.nbook' -not -path './.git/*'); do
+            echo "Validating: $f"
+            neuralbook nb-validate "$f" --level full
+          done
+
+      - name: Seal .nbook files
+        if: github.ref == 'refs/heads/main'
+        run: |
+          for f in $(find . -name '*.nbook' -not -path './.git/*'); do
+            echo "Sealing: $f"
+            neuralbook nb-seal "$f"
+          done
+
+      - name: Export EPUB + HTML
+        if: github.ref == 'refs/heads/main'
+        run: |
+          for f in $(find . -name '*.nbook' -not -path './.git/*'); do
+            echo "Exporting: $f"
+            neuralbook nb-export "$f" --format epub
+            neuralbook nb-export "$f" --format html
+          done
+
+      - name: Upload artifacts
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: neuralbook-build
+          path: |
+            **/*.epub
+            **/*.html
+          retention-days: 30

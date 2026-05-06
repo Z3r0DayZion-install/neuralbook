@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NeuralBook Attestation",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "generated_at",
+    "title",
+    "build_type",
+    "build_status",
+    "manifest_root_hash",
+    "manifest_sha256",
+    "build_fingerprint",
+    "source_file_count",
+    "encrypted_file_count",
+    "ci_context"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "build_type": { "type": "string", "minLength": 1 },
+    "build_status": { "type": "string", "minLength": 1 },
+    "manifest_root_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "manifest_sha256": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "build_fingerprint": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "source_file_count": { "type": "integer", "minimum": 0 },
+    "encrypted_file_count": { "type": "integer", "minimum": 0 },
+    "provenance_signature": {
+      "type": ["object", "null"],
+      "required": ["algorithm", "key_id", "fingerprint_signature_hex", "public_key_hex"],
+      "properties": {
+        "algorithm": { "type": "string", "const": "ed25519" },
+        "key_id": { "type": "string", "minLength": 1 },
+        "fingerprint_signature_hex": { "type": "string", "minLength": 128, "maxLength": 128 },
+        "public_key_hex": { "type": "string", "minLength": 64, "maxLength": 64 }
+      }
+    },
+    "provenance_signatures": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["algorithm", "key_id", "fingerprint_signature_hex", "public_key_hex"],
+        "properties": {
+          "algorithm": { "type": "string", "const": "ed25519" },
+          "key_id": { "type": "string", "minLength": 1 },
+          "fingerprint_signature_hex": { "type": "string", "minLength": 128, "maxLength": 128 },
+          "public_key_hex": { "type": "string", "minLength": 64, "maxLength": 64 }
+        }
+      }
+    },
+    "ci_context": {
+      "type": "object",
+      "required": ["git_sha", "git_ref", "workflow", "run_id"],
+      "properties": {
+        "git_sha": { "type": "string" },
+        "git_ref": { "type": "string" },
+        "workflow": { "type": "string" },
+        "run_id": { "type": "string" }
+      }
+    }
+  }
+}

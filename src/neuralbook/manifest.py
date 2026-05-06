@@ -1,16 +1,13 @@
-"""
-SHA-256 manifest generation and verification for integrity checking.
-"""
+"""SHA-256 manifest generation and verification for integrity checking."""
 
 import hashlib
 import json
 from pathlib import Path
-from typing import Dict, List
+from typing import Any, Dict
 
 
-def generate_manifest(directory: Path, recursive: bool = True) -> Dict:
-    """
-    Generate SHA-256 manifest for all files in directory.
+def generate_manifest(directory: Path, recursive: bool = True) -> Dict[str, Any]:
+    """Generate SHA-256 manifest for all files in directory.
 
     Args:
         directory: Root directory to manifest
@@ -19,7 +16,7 @@ def generate_manifest(directory: Path, recursive: bool = True) -> Dict:
     Returns:
         Manifest dict with file hashes
     """
-    manifest = {
+    manifest: Dict[str, Any] = {
         "version": "1.0",
         "generated": None,  # will be filled by caller
         "files": {},
@@ -38,8 +35,7 @@ def generate_manifest(directory: Path, recursive: bool = True) -> Dict:
 
 
 def compute_hash(file_path: Path, algorithm: str = "sha256") -> str:
-    """
-    Compute hash of a file.
+    """Compute hash of a file.
 
     Args:
         file_path: Path to file
@@ -48,6 +44,8 @@ def compute_hash(file_path: Path, algorithm: str = "sha256") -> str:
     Returns:
         Hex-encoded hash string
     """
+    if algorithm != "sha256":
+        raise ValueError(f"Unsupported algorithm: {algorithm}")
     hasher = hashlib.sha256()
     with open(file_path, "rb") as f:
         for chunk in iter(lambda: f.read(8192), b""):
@@ -55,9 +53,8 @@ def compute_hash(file_path: Path, algorithm: str = "sha256") -> str:
     return hasher.hexdigest()
 
 
-def verify_manifest(directory: Path, manifest: Dict) -> bool:
-    """
-    Verify that files match manifest hashes.
+def verify_manifest(directory: Path, manifest: Dict[str, Any]) -> bool:
+    """Verify that files match manifest hashes.
 
     Args:
         directory: Root directory to check
@@ -80,9 +77,8 @@ def verify_manifest(directory: Path, manifest: Dict) -> bool:
     return True
 
 
-def compute_root_hash(manifest: Dict) -> str:
-    """
-    Compute root integrity hash for entire manifest.
+def compute_root_hash(manifest: Dict[str, Any]) -> str:
+    """Compute root integrity hash for entire manifest.
 
     Args:
         manifest: Manifest dict

@@ -24,13 +24,10 @@ Usage:
 import secrets
 import sys
 
-from neuralbook.encryption import decrypt_content, derive_key, encrypt_content
-
-IV_LENGTH = 12
-AUTH_TAG_LENGTH = 16
+from neuralbook.encryption import AUTH_TAG_LENGTH, IV_LENGTH, decrypt_content, derive_key, encrypt_content
 
 
-def main():
+def main() -> int:
     """Demonstrate encryption and decryption."""
 
     print("=" * 60)
@@ -46,25 +43,24 @@ def main():
     print("\n[2] Deriving AES-256 key from seed (scrypt)...")
     key = derive_key(seed)
     print(f"  key:  {key.hex()[:32]}... ({len(key)} bytes)")
-    print( "  algo: scrypt(seed, salt='salt', n=16384, r=8, p=1, dklen=32)")
-    print( "  ↔    JS: crypto.scryptSync(seed, 'salt', 32)")
+    print("  algo: scrypt(seed, salt='salt', n=16384, r=8, p=1, dklen=32)")
+    print("        JS: crypto.scryptSync(seed, 'salt', 32)")
 
     # 3. Prepare content
     print("\n[3] Preparing content...")
-    original = b"""
-This is a confidential chapter from a NeuralBook title.
-
-It contains information protected by AES-256-GCM authenticated encryption.
-The authentication tag detects any modification to the ciphertext.
-""".strip()
+    original = (
+        "This is a confidential chapter from a NeuralBook title.\n\n"
+        "It contains information protected by AES-256-GCM authenticated encryption.\n"
+        "The authentication tag detects any modification to the ciphertext."
+    ).encode()
     print(f"  plaintext: {len(original)} bytes")
 
     # 4. Encrypt -> .nd blob
     print("\n[4] Encrypting to .nd blob...")
     blob = encrypt_content(original, key)
-    iv       = blob[:IV_LENGTH]
-    auth_tag = blob[IV_LENGTH:IV_LENGTH + AUTH_TAG_LENGTH]
-    ct       = blob[IV_LENGTH + AUTH_TAG_LENGTH:]
+    iv = blob[:IV_LENGTH]
+    auth_tag = blob[IV_LENGTH: IV_LENGTH + AUTH_TAG_LENGTH]
+    ct = blob[IV_LENGTH + AUTH_TAG_LENGTH:]
     print(f"  blob total: {len(blob)} bytes")
     print(f"  IV:         {iv.hex()} (12 bytes, random)")
     print(f"  AuthTag:    {auth_tag.hex()} (16 bytes)")
@@ -75,8 +71,8 @@ The authentication tag detects any modification to the ciphertext.
     try:
         recovered = decrypt_content(blob, key)
         print(f"  decrypted: {len(recovered)} bytes")
-    except Exception as e:
-        print(f"  FAIL: {e}")
+    except Exception as exc:
+        print(f"  FAIL: {exc}")
         return 1
 
     assert recovered == original, "Round-trip mismatch!"
@@ -84,17 +80,16 @@ The authentication tag detects any modification to the ciphertext.
 
     # 6. Tamper detection
     print("\n[6] Testing tamper detection...")
-    # Flip a byte in the ciphertext section of the blob
     tampered = bytearray(blob)
-    tampered[IV_LENGTH + AUTH_TAG_LENGTH] ^= 0xFF
+    tampered[IV_LENGTH + AUTH_TAG_LENGTH] ^= 0xFF  # flip a bit in ciphertext
     try:
         decrypt_content(bytes(tampered), key)
         print("  ERROR: tampered blob should have raised InvalidTag!")
         return 1
-    except Exception as e:
-        print(f"  correctly rejected tampered blob: {type(e).__name__}")
+    except Exception as exc:
+        print(f"  correctly rejected tampered blob: {type(exc).__name__}")
 
-    # 7. Multiple messages — each gets a unique IV
+    # 7. Multiple messages - each gets a unique IV
     print("\n[7] Unique IVs per message...")
     messages = [b"Chapter One", b"Chapter Two", b"Chapter Three"]
     blobs = [encrypt_content(m, key) for m in messages]
