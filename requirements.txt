@@ -31,3 +31,13 @@ cryptography
 pyyaml
 python-jose[cryptography]
 passlib[bcrypt]
+requests
+python-multipart
+fastapi
+uvicorn[standard]
+pydantic
+slowapi
+cryptography
+pyyaml
+python-jose[cryptography]
+passlib[bcrypt]
