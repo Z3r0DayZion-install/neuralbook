@@ -1,43 +1,17 @@
-# NeuralBook development dependencies
-# Install with: pip install -e ".[dev]"
-# Or install everything: pip install -e ".[all]"
-#
-# This file is for CI convenience. The canonical dependency list is pyproject.toml.
-
+# NeuralBook uses pyproject.toml as canonical dependencies.
+# This file is kept minimal for compatibility.
+# Install with: pip install -e ".[server]"
 cryptography==46.0.7
 pyyaml==6.0.1
 click==8.3.2
 markdown2==2.4.13
 stripe==7.10.0
 sendgrid==6.11.0
-pytest==9.0.2
-pytest-cov==4.1.0
-black==24.4.2
-isort==5.13.2
-flake8==7.0.0
-mypy==1.10.0
-python-multipart
-requests
-python-multipart
-requests
-python-multipart
-requests
-python-multipart
 fastapi
 uvicorn[standard]
 pydantic
 slowapi
-cryptography
-pyyaml
 python-jose[cryptography]
 passlib[bcrypt]
 requests
 python-multipart
-fastapi
-uvicorn[standard]
-pydantic
-slowapi
-cryptography
-pyyaml
-python-jose[cryptography]
-passlib[bcrypt]
