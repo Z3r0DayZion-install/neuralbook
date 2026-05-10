@@ -1173,6 +1173,6 @@ def start_server():
     import uvicorn
 
     host = os.environ.get("NBOOK_HOST", "0.0.0.0")
-    port = int(os.environ.get("NBOOK_PORT", "8000"))
+    port = int(os.environ.get("NBOOK_PORT") or os.environ.get("PORT", "8000"))
     log_level = os.environ.get("NBOOK_LOG_LEVEL", "info").lower()
     uvicorn.run(app, host=host, port=port, log_level=log_level)
