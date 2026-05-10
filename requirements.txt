@@ -1,6 +1,6 @@
 # NeuralBook uses pyproject.toml as canonical dependencies.
 # This file is kept minimal for compatibility.
-# Install with: pip install -e ".[server]"
+# Install with: pip install ".[server]"
 .[server]
 cryptography==46.0.7
 pyyaml==6.0.1
