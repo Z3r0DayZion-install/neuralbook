@@ -94,9 +94,13 @@ neuralbook = "neuralbook.cli:main"
 neuralbook-api = "neuralbook.platform_api:start_server"
 
 [tool.setuptools]
-packages = ["neuralbook"]
 package-dir = {"" = "src"}
 include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["neuralbook*"]
+exclude = ["tests*"]
 
 [tool.setuptools.package-data]
 neuralbook = ["py.typed"]
