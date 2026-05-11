@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: neuralbook
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: NBOOK_HOST
+        value: 0.0.0.0
+      - key: NBOOK_LOG_LEVEL
+        value: info
+      - key: NBOOK_DATA
+        value: /data
