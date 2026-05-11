@@ -27,8 +27,7 @@ ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     NBOOK_DATA=/data \
-    NBOOK_HOST=0.0.0.0 \
-    NBOOK_PORT=8000
+    NBOOK_HOST=0.0.0.0
 
 WORKDIR /app
 COPY . .
@@ -39,8 +38,8 @@ RUN mkdir -p /data && chmod 777 /data
 RUN useradd --create-home nbook && chown -R nbook:nbook /data
 USER nbook
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:${PORT:-8000}/health || exit 1
 
 EXPOSE 8000
 
