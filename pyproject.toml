@@ -74,6 +74,7 @@ server = [
     "pydantic>=2.9.0",
     "slowapi==0.1.9",
     "python-multipart>=0.0.9",
+    "psycopg2-binary>=2.9.9",
 ]
 docker = [
     "docker==7.0.0",

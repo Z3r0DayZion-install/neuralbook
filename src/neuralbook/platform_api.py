@@ -83,6 +83,7 @@ async def lifespan(_: FastAPI):
     )
     logger.info(f"NeuralBook Platform API starting — data dir: {DATA_DIR}")
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+    _pg_init()
     try:
         yield
     finally:
@@ -228,6 +229,56 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 DATA_DIR = Path(os.environ.get("NBOOK_DATA", "./nbook_data"))
 _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+# ── Postgres email storage (optional; falls back to JSON if no DATABASE_URL) ──
+_DATABASE_URL: Optional[str] = os.environ.get("DATABASE_URL")
+
+
+def _pg_init() -> None:
+    """Create the emails table if DATABASE_URL is set."""
+    if not _DATABASE_URL:
+        return
+    try:
+        import psycopg2  # type: ignore
+
+        with psycopg2.connect(_DATABASE_URL) as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS emails (
+                        email       TEXT PRIMARY KEY,
+                        source      TEXT NOT NULL DEFAULT 'landing',
+                        captured_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                        confirmed   BOOLEAN NOT NULL DEFAULT false
+                    );
+                    """
+                )
+            conn.commit()
+        logger.info("Postgres email table ready")
+    except Exception as exc:  # pragma: no cover
+        logger.error(f"Postgres init failed (falling back to JSON): {exc}")
+
+
+def _pg_capture_email(email: str, source: str) -> dict:
+    """Insert or ignore duplicate email via Postgres. Returns result dict."""
+    import psycopg2  # type: ignore
+
+    with psycopg2.connect(_DATABASE_URL) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO emails (email, source)
+                VALUES (%s, %s)
+                ON CONFLICT (email) DO NOTHING
+                RETURNING email;
+                """,
+                (email, source),
+            )
+            row = cur.fetchone()
+        conn.commit()
+    if row:
+        return {"success": True, "email": email, "message": "email captured successfully"}
+    return {"success": True, "email": email, "message": "email already captured", "already_exists": True}
 
 
 def _now() -> str:
@@ -542,15 +593,23 @@ async def capture_email(email_data: EmailCapture):
     email = email_data.email.strip()
     if not email or not _EMAIL_RE.match(email):
         raise HTTPException(422, "invalid email address")
+    if _DATABASE_URL:
+        try:
+            result = _pg_capture_email(email, email_data.source or "landing")
+            if result.get("already_exists"):
+                return JSONResponse(status_code=200, content=result)
+            return result
+        except Exception as exc:
+            logger.error(f"Postgres email capture failed: {exc}")
+            raise HTTPException(503, "email service temporarily unavailable")
+    # --- JSON fallback (no DATABASE_URL) ---
     data = _load_store()
     existing = next((e for e in data["emails"] if e["email"] == email), None)
     if existing:
-        return {
-            "success": True,
-            "email": email,
-            "message": "email already captured",
-            "already_exists": True,
-        }
+        return JSONResponse(
+            status_code=200,
+            content={"success": True, "email": email, "message": "email already captured", "already_exists": True},
+        )
     entry = {"email": email, "source": email_data.source, "captured_at": _now(), "confirmed": False}
     data["emails"].append(entry)
     _save_store(data)
